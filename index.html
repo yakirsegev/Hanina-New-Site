@@ -1251,16 +1251,21 @@ let archiveScroll=null;
 function go(h){
   if(h.startsWith("exh-") && (currentRoute||location.hash.slice(1))==="archive") archiveScroll=window.scrollY;
   currentRoute=h;
-  try{ if(location.hash!=="#"+h) history.replaceState(null,"","#"+h); }catch(e){}
+  // Each page gets its own history entry, so the phone's Back button returns to the previous screen
+  try{
+    history.replaceState({y:window.scrollY},"",location.href);
+    if(location.hash!=="#"+h) history.pushState({y:0},"","#"+h);
+  }catch(e){}
   route();
 }
+try{ history.scrollRestoration="manual"; }catch(e){}
 // Handle in-page links in script so navigation works even where the frame blocks hash changes
 document.addEventListener("click",e=>{
   const a=e.target.closest('a[href^="#"]'); if(!a) return;
   const h=a.getAttribute("href").slice(1); if(!h) return;
   e.preventDefault(); go(h);
 });
-function route(){
+function route(backY){
   const h=currentRoute||(location.hash||"#current").slice(1)||"current";
   let html, nav=h;
   if(h.startsWith("artist-")){html=artistView(h.slice(7));nav="artists"}
@@ -1275,7 +1280,8 @@ function route(){
   setTones();
   splitCardTitles();
   const r=currentRoute||location.hash.slice(1);
-  if(r==="archive" && archiveScroll!==null){ const y=archiveScroll; archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,y)); }
+  if(typeof backY==="number"){ archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,backY)); }
+  else if(r==="archive" && archiveScroll!==null){ const y=archiveScroll; archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,y)); }
   else window.scrollTo(0,0);
 }
 app.addEventListener("click",e=>{
@@ -1304,7 +1310,15 @@ document.addEventListener("submit",e=>{
   document.getElementById("news-msg").textContent=/^\S+@\S+\.\S+$/.test(v)?"תודה! (הטופס יחובר לשירות דיוור בהמשך)":"נא להזין כתובת אימייל תקינה";
 });
 document.getElementById("yr").textContent=new Date().getFullYear();
-addEventListener("hashchange",()=>{currentRoute=(location.hash||"#current").slice(1);route()});
+function syncFromUrl(){
+  const h=(location.hash||"#current").slice(1)||"current";
+  if(h===currentRoute) return;
+  currentRoute=h;
+  const y=history.state&&typeof history.state.y==="number"?history.state.y:undefined;
+  route(y);
+}
+addEventListener("popstate",syncFromUrl);
+addEventListener("hashchange",syncFromUrl);
 route();
 </script>
 </body>
