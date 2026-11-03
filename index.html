@@ -835,7 +835,10 @@ function currentWorks(){
   if(h.startsWith("artist-")) list=SITE.artists.find(x=>x.id===h.slice(7))?.works;
   else if(h.startsWith("exh-")) list=SITE.archive.find(x=>x.id===h.slice(4))?.works;
   else if(h==="current"||h==="now") list=SITE.current.works;
-  return (list||[]).filter(w=>w.img).map(w=>({img:w.img,title:w.title||w.caption||w.details||"",photo:w.photo||""}));
+  let works=(list||[]).filter(w=>w.img).map(w=>({img:w.img,title:w.title||w.caption||w.details||"",photo:w.photo||""}));
+  const ord=h.startsWith("artist-")&&app.querySelector(".works")?.dataset.order; // follow the on-screen order
+  if(ord){const o=ord.split(",").map(Number); if(o.length===works.length) works=o.map(k=>works[k]);}
+  return works;
 }
 function openLightbox(i){
   const works=currentWorks(); if(!works.length) return;
@@ -876,53 +879,76 @@ function splitCardTitles(){
 addEventListener("resize",()=>{clearTimeout(window.__sct);window.__sct=setTimeout(splitCardTitles,150)});
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{splitCardTitles()});
 addEventListener("load",()=>{splitCardTitles()});
-// Desktop artist pages: three works per row, justified, fixed gaps (mobile is left as is).
-// Leftover works don't sit alone in a last row: at the top of the page one portrait grows to
-// two rows' height and the next works fill the space beside it (2 over 2, or 3 over 3).
+// Desktop artist pages: three works per row, justified, fixed gaps, no holes (mobile is left as is).
+// Works may be reordered. Leftovers are absorbed at the top: a portrait grows to two rows' height
+// with two works beside it on each row (one such block for n%3==2, two for n%3==1).
+// The remaining works are dealt into rows of three with similar heights.
 function layoutWorks(){
   const box=app.querySelector(".works"); if(!box) return;
   const figs=[...box.querySelectorAll(".work")];
   figs.forEach((f,i)=>{if(f.dataset.k===undefined)f.dataset.k=i});
   figs.sort((a,b)=>a.dataset.k-b.dataset.k);
-  if(box.querySelector(".wb")) box.replaceChildren(...figs); // undo the previous mosaic
-  const reset=()=>figs.forEach(f=>{f.style.width="";f.style.removeProperty("--rh")});
-  if(!matchMedia("(min-width:641px)").matches){box.classList.remove("justified");reset();return}
+  const finish=order=>{ // DOM is in visual order; lightbox follows it
+    box.dataset.order=order.join(",");
+    order.forEach((k,pos)=>{const z=figs[k].querySelector("[data-zoom]");if(z)z.dataset.zoom=pos});
+  };
+  if(!matchMedia("(min-width:641px)").matches){
+    box.replaceChildren(...figs); box.classList.remove("justified");
+    figs.forEach(f=>{f.style.width="";f.style.removeProperty("--rh")}); finish(figs.map((_,i)=>i)); return;
+  }
   const W=box.clientWidth, gap=28, vgap=40, cols=matchMedia("(min-width:1050px)").matches?3:2;
   const ar=figs.map(f=>{const im=f.querySelector("img");return im&&im.naturalWidth?im.naturalWidth/im.naturalHeight:1.6});
   box.classList.add("justified");
-  const set=(f,a,h)=>{f.style.width=Math.floor(a*h)+"px";f.style.setProperty("--rh",(h-0.5)+"px")};
+  const set=(i,h)=>{figs[i].style.width=Math.floor(ar[i]*h)+"px";figs[i].style.setProperty("--rh",(h-0.5)+"px")};
   const sumAr=list=>list.reduce((t,i)=>t+ar[i],0);
-  const row=(list,width)=>{const h=(width-gap*(list.length-1))/sumAr(list);list.forEach(i=>set(figs[i],ar[i],h));return h};
-  const n=figs.length, rest=cols===3?n%3:0, b=rest===2&&n>=5?5:rest===1&&n>=7?7:0;
-  const rows=from=>{ // plain rows of `cols`; a short last row is centered, not stretched
-    let k=from, lastH=null;
-    for(;k+cols<=n;k+=cols) lastH=row([...Array(cols).keys()].map(j=>k+j),W);
-    if(k<n){const list=[...Array(n-k).keys()].map(j=>k+j), h=Math.min((W-gap*(list.length-1))/sumAr(list),lastH||W/3);list.forEach(i=>set(figs[i],ar[i],h))}
-  };
-  const block=[...Array(b).keys()];
-  const P=block.reduce((m,i)=>ar[i]<ar[m]?i:m,0), others=block.filter(i=>i!==P);
-  if(!b||ar[P]>=1){rows(0);return} // no portrait to enlarge at the top: plain rows
-  const half=others.length/2, top=others.slice(0,half), bot=others.slice(half), s1=1/sumAr(top), s2=1/sumAr(bot);
+  const row=(list,width)=>{const h=(width-gap*(list.length-1))/sumAr(list);list.forEach(i=>set(i,h));return h};
   const cap=list=>Math.max(0,...list.map(i=>{const c=figs[i].querySelector("figcaption");return c?c.offsetHeight+10:0}));
-  const solve=()=>{ // tall work's height so its bottom lines up with the second row beside it
-    const extra=cap(top)+vgap+cap(bot)-cap([P]);
-    return ((W-gap)*(s1+s2)-gap*((top.length-1)*s1+(bot.length-1)*s2)+extra)/(1+ar[P]*(s1+s2));
-  };
-  let H=solve();
-  if(ar[P]*H>W*0.5){rows(0);return} // portrait would be too wide: plain rows instead
-  const wrap=document.createElement("div"); wrap.className="wb";
-  const col=document.createElement("div"); col.className="wb-col";
-  const r1=document.createElement("div"); r1.className="wb-row"; top.forEach(i=>r1.appendChild(figs[i]));
-  const r2=document.createElement("div"); r2.className="wb-row"; bot.forEach(i=>r2.appendChild(figs[i]));
-  col.append(r1,r2);
-  if(block.indexOf(P)<b/2) wrap.append(figs[P],col); else wrap.append(col,figs[P]);
-  box.prepend(wrap);
-  for(let pass=0;pass<2;pass++){ // second pass uses the real caption heights
-    if(pass) H=solve();
-    set(figs[P],ar[P],H);
-    const Wc=W-gap-Math.floor(ar[P]*H); row(top,Wc); row(bot,Wc);
+  const n=figs.length, idx=[...Array(n).keys()], byOrig=(a,b)=>a-b;
+  const out=[], order=[];
+  // Plain rows in the original order (fallback, and narrow desktops); short last row centered
+  const plain=list=>{let lastH=null;
+    for(let k=0;k<list.length;k+=cols){
+      const r=list.slice(k,k+cols); r.forEach(i=>{out.push(figs[i]);order.push(i)});
+      if(r.length===cols||!lastH) lastH=Math.min(row(r,W),r.length<cols?W/cols:Infinity);
+      else {const h=Math.min((W-gap*(r.length-1))/sumAr(r),lastH);r.forEach(i=>set(i,h))}
+    }};
+  const r3=n%3, nb=cols!==3||n<4?0:r3===2?1:r3===1&&n>=10?2:r3===1&&n>=7?-1:0; // -1: one block, 3 over 3
+  const portraits=idx.slice().sort((a,b)=>ar[a]-ar[b]).slice(0,Math.abs(nb));
+  if(cols===3&&n===4){row(idx.slice(0,2),W);row(idx.slice(2),W);idx.forEach(i=>{out.push(figs[i]);order.push(i)});}
+  else if(!nb||portraits.some(i=>ar[i]>=1)) plain(idx);
+  else{
+    let rest=idx.filter(i=>!portraits.includes(i));
+    const per=nb===-1?3:2, blocks=[];
+    portraits.sort(byOrig).forEach((P,bi)=>{ // companions: the widest works, so the block stays compact
+      const comp=rest.slice().sort((a,b)=>ar[b]-ar[a]).slice(0,per*2).sort(byOrig);
+      rest=rest.filter(i=>!comp.includes(i)); blocks.push({P,top:comp.slice(0,per),bot:comp.slice(per),start:bi%2===0});
+    });
+    // Remaining works: deal into rows of three with balanced aspect sums
+    const m=rest.length/3, rows=Array.from({length:m},()=>[]);
+    rest.slice().sort((a,b)=>ar[b]-ar[a]).forEach((i,j)=>{const t=Math.floor(j/m),c=j%m;rows[t%2?m-1-c:c].push(i)});
+    rows.forEach(r=>r.sort(byOrig)); rows.sort((a,b)=>a[0]-b[0]);
+    for(const B of blocks){
+      const wrap=document.createElement("div"); wrap.className="wb";
+      const col=document.createElement("div"); col.className="wb-col";
+      const r1=document.createElement("div"); r1.className="wb-row"; B.top.forEach(i=>r1.appendChild(figs[i]));
+      const r2=document.createElement("div"); r2.className="wb-row"; B.bot.forEach(i=>r2.appendChild(figs[i]));
+      col.append(r1,r2); if(B.start) wrap.append(figs[B.P],col); else wrap.append(col,figs[B.P]);
+      out.push(wrap); order.push(...(B.start?[B.P,...B.top,...B.bot]:[...B.top,...B.bot,B.P]));
+    }
+    rows.forEach(r=>r.forEach(i=>{out.push(figs[i]);order.push(i)}));
+    box.replaceChildren(...out);
+    for(const B of blocks){
+      const s1=1/sumAr(B.top), s2=1/sumAr(B.bot), g=(B.top.length-1)*s1+(B.bot.length-1)*s2;
+      for(let pass=0;pass<2;pass++){ // second pass uses the real caption heights
+        const extra=cap(B.top)+vgap+cap(B.bot)-cap([B.P]);
+        const H=((W-gap)*(s1+s2)-gap*g+extra)/(1+ar[B.P]*(s1+s2));
+        set(B.P,H); const Wc=W-gap-Math.floor(ar[B.P]*H); row(B.top,Wc); row(B.bot,Wc);
+      }
+    }
+    rows.forEach(r=>row(r,W));
+    finish(order); return;
   }
-  rows(b);
+  box.replaceChildren(...out); finish(order);
 }
 addEventListener("resize",()=>{clearTimeout(window.__lw);window.__lw=setTimeout(layoutWorks,100)});
 function setTones(){
