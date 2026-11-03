@@ -203,6 +203,13 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .work .ph:not(.empty),.lb-stage .ph:not(.empty){background:transparent}
 .work .ph img,.lb-stage .ph img{object-fit:contain}
 .works .work .ph img{object-position:right bottom}
+/* Desktop artist pages: justified rows — equal height per row, fixed gaps, centered, no holes */
+@media (min-width:641px){
+.works.justified{display:flex;flex-wrap:wrap;justify-content:center;gap:40px 28px}
+.works.justified .work{flex:none;margin:0}
+.works.justified .work .ph{aspect-ratio:auto;height:var(--rh);margin-bottom:0}
+.works.justified .work .ph img{object-fit:cover;object-position:center center}
+}
 .gallery .work .ph img{object-position:center center}
 .gallery.fill .work .ph:not(.empty){background:var(--ph)}
 .gallery.fill .work .ph img{object-fit:cover}
@@ -866,6 +873,27 @@ function splitCardTitles(){
 addEventListener("resize",()=>{clearTimeout(window.__sct);window.__sct=setTimeout(splitCardTitles,150)});
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{splitCardTitles()});
 addEventListener("load",()=>{splitCardTitles()});
+// Desktop artist pages: lay works out in justified rows (mobile is left as is)
+function layoutWorks(){
+  const box=app.querySelector(".works"); if(!box) return;
+  const figs=[...box.querySelectorAll(".work")];
+  if(!matchMedia("(min-width:641px)").matches){
+    box.classList.remove("justified"); figs.forEach(f=>{f.style.width="";f.style.removeProperty("--rh")}); return;
+  }
+  const W=box.clientWidth, gap=28, cols=matchMedia("(min-width:1050px)").matches?3:2;
+  const target=((W-gap*(cols-1))/cols)*0.72;
+  const ar=figs.map(f=>{const im=f.querySelector("img");return im&&im.naturalWidth?im.naturalWidth/im.naturalHeight:1.6});
+  box.classList.add("justified");
+  let row=[],sum=0;
+  const place=(items,h)=>items.forEach(i=>{figs[i].style.width=Math.floor(ar[i]*h)+"px";figs[i].style.setProperty("--rh",h+"px")});
+  ar.forEach((a,i)=>{
+    row.push(i); sum+=a;
+    const h=(W-gap*(row.length-1))/sum;
+    if(h<=target){place(row,h-0.5);row=[];sum=0}
+  });
+  if(row.length) place(row,Math.min(target,(W-gap*(row.length-1))/sum)-0.5);
+}
+addEventListener("resize",()=>{clearTimeout(window.__lw);window.__lw=setTimeout(layoutWorks,100)});
 function setTones(){
   app.querySelectorAll(".gallery.fill .zoom").forEach(btn=>{
     const img=btn.querySelector("img"); if(!img) return;
@@ -930,6 +958,7 @@ function route(){
   startSlider();
   setTones();
   splitCardTitles();
+  layoutWorks(); app.querySelectorAll(".works img").forEach(im=>{if(!im.complete)im.addEventListener("load",layoutWorks,{once:true})});
   const r=currentRoute||location.hash.slice(1);
   if(r==="archive" && archiveScroll!==null){ const y=archiveScroll; archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,y)); }
   else window.scrollTo(0,0);
