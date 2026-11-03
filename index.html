@@ -196,23 +196,16 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .works{display:grid;gap:40px 28px;grid-template-columns:minmax(0,1fr)}
 @media (min-width:640px){.works{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1050px){.works{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* Desktop: a short last row of works is centered */
+@media (min-width:641px){.works{display:flex;flex-wrap:wrap;justify-content:center}.works>.work{flex:none;width:calc((100% - 28px)/2)}}
+@media (min-width:1050px){.works>.work{width:calc((100% - 56px)/3)}}
 .work figcaption{font-size:14px;margin-top:10px;color:var(--fg)}
 .zoom{all:unset;display:block;width:100%;cursor:zoom-in}
 .zoom:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
 .zoom .ph{transition:opacity .2s}.zoom:hover .ph{opacity:.85}
 .work .ph:not(.empty),.lb-stage .ph:not(.empty){background:transparent}
 .work .ph img,.lb-stage .ph img{object-fit:contain}
-.works .work .ph img{object-position:right bottom}
-/* Desktop artist pages: justified rows — equal height per row, fixed gaps, centered, no holes */
-@media (min-width:641px){
-.works.justified{display:flex;flex-wrap:wrap;justify-content:center;gap:40px 28px}
-.works.justified .work{flex:none;margin:0}
-.works.justified .wb{display:flex;gap:28px;width:100%;align-items:flex-start}
-.works.justified .wb-col{display:flex;flex-direction:column;gap:40px}
-.works.justified .wb-row{display:flex;gap:28px}
-.works.justified .work .ph{aspect-ratio:auto;height:var(--rh);margin-bottom:0}
-.works.justified .work .ph img{object-fit:cover;object-position:center center}
-}
+.works .work .ph img{object-position:center center}
 .gallery .work .ph img{object-position:center center}
 .gallery.fill .work .ph:not(.empty){background:var(--ph)}
 .gallery.fill .work .ph img{object-fit:cover}
@@ -835,10 +828,7 @@ function currentWorks(){
   if(h.startsWith("artist-")) list=SITE.artists.find(x=>x.id===h.slice(7))?.works;
   else if(h.startsWith("exh-")) list=SITE.archive.find(x=>x.id===h.slice(4))?.works;
   else if(h==="current"||h==="now") list=SITE.current.works;
-  let works=(list||[]).filter(w=>w.img).map(w=>({img:w.img,title:w.title||w.caption||w.details||"",photo:w.photo||""}));
-  const ord=h.startsWith("artist-")&&app.querySelector(".works")?.dataset.order; // follow the on-screen order
-  if(ord){const o=ord.split(",").map(Number); if(o.length===works.length) works=o.map(k=>works[k]);}
-  return works;
+  return (list||[]).filter(w=>w.img).map(w=>({img:w.img,title:w.title||w.caption||w.details||"",photo:w.photo||""}));
 }
 function openLightbox(i){
   const works=currentWorks(); if(!works.length) return;
@@ -879,78 +869,6 @@ function splitCardTitles(){
 addEventListener("resize",()=>{clearTimeout(window.__sct);window.__sct=setTimeout(splitCardTitles,150)});
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{splitCardTitles()});
 addEventListener("load",()=>{splitCardTitles()});
-// Desktop artist pages: three works per row, justified, fixed gaps, no holes (mobile is left as is).
-// Works may be reordered. Leftovers are absorbed at the top: a portrait grows to two rows' height
-// with two works beside it on each row (one such block for n%3==2, two for n%3==1).
-// The remaining works are dealt into rows of three with similar heights.
-function layoutWorks(){
-  const box=app.querySelector(".works"); if(!box) return;
-  const figs=[...box.querySelectorAll(".work")];
-  figs.forEach((f,i)=>{if(f.dataset.k===undefined)f.dataset.k=i});
-  figs.sort((a,b)=>a.dataset.k-b.dataset.k);
-  const finish=order=>{ // DOM is in visual order; lightbox follows it
-    box.dataset.order=order.join(",");
-    order.forEach((k,pos)=>{const z=figs[k].querySelector("[data-zoom]");if(z)z.dataset.zoom=pos});
-  };
-  if(!matchMedia("(min-width:641px)").matches){
-    box.replaceChildren(...figs); box.classList.remove("justified");
-    figs.forEach(f=>{f.style.width="";f.style.removeProperty("--rh")}); finish(figs.map((_,i)=>i)); return;
-  }
-  const W=box.clientWidth, gap=28, vgap=40, cols=matchMedia("(min-width:1050px)").matches?3:2;
-  const ar=figs.map(f=>{const im=f.querySelector("img");return im&&im.naturalWidth?im.naturalWidth/im.naturalHeight:1.6});
-  box.classList.add("justified");
-  const set=(i,h)=>{figs[i].style.width=Math.floor(ar[i]*h)+"px";figs[i].style.setProperty("--rh",(h-0.5)+"px")};
-  const sumAr=list=>list.reduce((t,i)=>t+ar[i],0);
-  const row=(list,width)=>{const h=(width-gap*(list.length-1))/sumAr(list);list.forEach(i=>set(i,h));return h};
-  const cap=list=>Math.max(0,...list.map(i=>{const c=figs[i].querySelector("figcaption");return c?c.offsetHeight+10:0}));
-  const n=figs.length, idx=[...Array(n).keys()], byOrig=(a,b)=>a-b;
-  const out=[], order=[];
-  // Plain rows in the original order (fallback, and narrow desktops); short last row centered
-  const plain=list=>{let lastH=null;
-    for(let k=0;k<list.length;k+=cols){
-      const r=list.slice(k,k+cols); r.forEach(i=>{out.push(figs[i]);order.push(i)});
-      if(r.length===cols||!lastH) lastH=Math.min(row(r,W),r.length<cols?W/cols:Infinity);
-      else {const h=Math.min((W-gap*(r.length-1))/sumAr(r),lastH);r.forEach(i=>set(i,h))}
-    }};
-  const r3=n%3, nb=cols!==3||n<4?0:r3===2?1:r3===1&&n>=10?2:r3===1&&n>=7?-1:0; // -1: one block, 3 over 3
-  const portraits=idx.slice().sort((a,b)=>ar[a]-ar[b]).slice(0,Math.abs(nb));
-  if(cols===3&&n===4){row(idx.slice(0,2),W);row(idx.slice(2),W);idx.forEach(i=>{out.push(figs[i]);order.push(i)});}
-  else if(!nb||portraits.some(i=>ar[i]>=1)) plain(idx);
-  else{
-    let rest=idx.filter(i=>!portraits.includes(i));
-    const per=nb===-1?3:2, blocks=[];
-    portraits.sort(byOrig).forEach((P,bi)=>{ // companions: the widest works, so the block stays compact
-      const comp=rest.slice().sort((a,b)=>ar[b]-ar[a]).slice(0,per*2).sort(byOrig);
-      rest=rest.filter(i=>!comp.includes(i)); blocks.push({P,top:comp.slice(0,per),bot:comp.slice(per),start:bi%2===0});
-    });
-    // Remaining works: deal into rows of three with balanced aspect sums
-    const m=rest.length/3, rows=Array.from({length:m},()=>[]);
-    rest.slice().sort((a,b)=>ar[b]-ar[a]).forEach((i,j)=>{const t=Math.floor(j/m),c=j%m;rows[t%2?m-1-c:c].push(i)});
-    rows.forEach(r=>r.sort(byOrig)); rows.sort((a,b)=>a[0]-b[0]);
-    for(const B of blocks){
-      const wrap=document.createElement("div"); wrap.className="wb";
-      const col=document.createElement("div"); col.className="wb-col";
-      const r1=document.createElement("div"); r1.className="wb-row"; B.top.forEach(i=>r1.appendChild(figs[i]));
-      const r2=document.createElement("div"); r2.className="wb-row"; B.bot.forEach(i=>r2.appendChild(figs[i]));
-      col.append(r1,r2); if(B.start) wrap.append(figs[B.P],col); else wrap.append(col,figs[B.P]);
-      out.push(wrap); order.push(...(B.start?[B.P,...B.top,...B.bot]:[...B.top,...B.bot,B.P]));
-    }
-    rows.forEach(r=>r.forEach(i=>{out.push(figs[i]);order.push(i)}));
-    box.replaceChildren(...out);
-    for(const B of blocks){
-      const s1=1/sumAr(B.top), s2=1/sumAr(B.bot), g=(B.top.length-1)*s1+(B.bot.length-1)*s2;
-      for(let pass=0;pass<2;pass++){ // second pass uses the real caption heights
-        const extra=cap(B.top)+vgap+cap(B.bot)-cap([B.P]);
-        const H=((W-gap)*(s1+s2)-gap*g+extra)/(1+ar[B.P]*(s1+s2));
-        set(B.P,H); const Wc=W-gap-Math.floor(ar[B.P]*H); row(B.top,Wc); row(B.bot,Wc);
-      }
-    }
-    rows.forEach(r=>row(r,W));
-    finish(order); return;
-  }
-  box.replaceChildren(...out); finish(order);
-}
-addEventListener("resize",()=>{clearTimeout(window.__lw);window.__lw=setTimeout(layoutWorks,100)});
 function setTones(){
   app.querySelectorAll(".gallery.fill .zoom").forEach(btn=>{
     const img=btn.querySelector("img"); if(!img) return;
@@ -1015,7 +933,6 @@ function route(){
   startSlider();
   setTones();
   splitCardTitles();
-  layoutWorks(); app.querySelectorAll(".works img").forEach(im=>{if(!im.complete)im.addEventListener("load",layoutWorks,{once:true})});
   const r=currentRoute||location.hash.slice(1);
   if(r==="archive" && archiveScroll!==null){ const y=archiveScroll; archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,y)); }
   else window.scrollTo(0,0);
