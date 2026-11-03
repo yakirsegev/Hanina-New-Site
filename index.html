@@ -650,6 +650,9 @@ const range=(a,b)=>b?`${fmt(a)}<span class="dsh-l">—</span><span class="dsh-s"
 const ph=(img,label,cls="")=>img
   ? `<span class="ph ${cls}"><img src="${esc(img)}" alt="${esc(label)}" loading="lazy"></span>`
   : `<span class="ph empty ${cls}" data-label="${esc(label??"תמונה")}"></span>`;
+// Artist cards: alphabetical (א→ת) by Hebrew surname (last word of the name), then first name
+const artistsBySurname=()=>{const k=a=>{const w=a.name.trim().split(/\s+/);return [w.at(-1),w.slice(0,-1).join(" ")]};
+  return [...SITE.artists].sort((a,b)=>{const x=k(a),y=k(b);return x[0].localeCompare(y[0],"he")||x[1].localeCompare(y[1],"he")})};
 const archiveSorted=()=>[...SITE.archive].sort((a,b)=>b.start.localeCompare(a.start));
 
 function textsBlock(x,always){
@@ -715,7 +718,7 @@ const views={
   artists:()=>`
     <h1 class="page-title">אמני חנינא</h1>
     <div class="artist-grid">
-      ${SITE.artists.map(a=>{const ext=a.link&&/^https?:/.test(a.link);
+      ${artistsBySurname().map(a=>{const ext=a.link&&/^https?:/.test(a.link);
         return `<a class="artist-card" href="${ext?esc(a.link):`#artist-${a.id}`}"${ext?' target="_blank" rel="noopener"':""}>
           ${ph(a.img,"תמונה","land")}
           <span class="n">${esc(a.name)}</span>${a.nameEn?`<span class="ne"><bdi dir="ltr" lang="en">${esc(a.nameEn)}</bdi></span>`:""}
