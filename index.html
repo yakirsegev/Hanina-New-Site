@@ -207,6 +207,9 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 @media (min-width:641px){
 .works.justified{display:flex;flex-wrap:wrap;justify-content:center;gap:40px 28px}
 .works.justified .work{flex:none;margin:0}
+.works.justified .wb{display:flex;gap:28px;width:100%;align-items:flex-start}
+.works.justified .wb-col{display:flex;flex-direction:column;gap:40px}
+.works.justified .wb-row{display:flex;gap:28px}
 .works.justified .work .ph{aspect-ratio:auto;height:var(--rh);margin-bottom:0}
 .works.justified .work .ph img{object-fit:cover;object-position:center center}
 }
@@ -873,26 +876,55 @@ function splitCardTitles(){
 addEventListener("resize",()=>{clearTimeout(window.__sct);window.__sct=setTimeout(splitCardTitles,150)});
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{splitCardTitles()});
 addEventListener("load",()=>{splitCardTitles()});
-// Desktop artist pages: lay works out in justified rows (mobile is left as is)
+// Desktop artist pages: three works per row, justified, fixed gaps (mobile is left as is).
+// Leftover works don't sit alone in a last row: one portrait grows to two rows' height
+// and the remaining works fill the space beside it.
 function layoutWorks(){
   const box=app.querySelector(".works"); if(!box) return;
   const figs=[...box.querySelectorAll(".work")];
-  if(!matchMedia("(min-width:641px)").matches){
-    box.classList.remove("justified"); figs.forEach(f=>{f.style.width="";f.style.removeProperty("--rh")}); return;
-  }
-  const W=box.clientWidth, gap=28, cols=matchMedia("(min-width:1050px)").matches?3:2;
-  const target=((W-gap*(cols-1))/cols)*0.8;
+  figs.forEach((f,i)=>{if(f.dataset.k===undefined)f.dataset.k=i});
+  figs.sort((a,b)=>a.dataset.k-b.dataset.k);
+  if(box.querySelector(".wb")) box.replaceChildren(...figs); // undo the previous mosaic
+  const reset=()=>figs.forEach(f=>{f.style.width="";f.style.removeProperty("--rh")});
+  if(!matchMedia("(min-width:641px)").matches){box.classList.remove("justified");reset();return}
+  const W=box.clientWidth, gap=28, vgap=40, cols=matchMedia("(min-width:1050px)").matches?3:2;
   const ar=figs.map(f=>{const im=f.querySelector("img");return im&&im.naturalWidth?im.naturalWidth/im.naturalHeight:1.6});
   box.classList.add("justified");
-  // Fixed number of works per row (3 on wide screens, 2 on narrower desktops)
-  const place=(items,h)=>items.forEach(i=>{figs[i].style.width=Math.floor(ar[i]*h)+"px";figs[i].style.setProperty("--rh",h+"px")});
-  let lastFull=null;
-  for(let k=0;k<ar.length;k+=cols){
-    const row=[...Array(Math.min(cols,ar.length-k)).keys()].map(j=>k+j), sum=row.reduce((t,i)=>t+ar[i],0);
-    let h=(W-gap*(row.length-1))/sum;
-    if(row.length<cols) h=Math.min(h,lastFull||target*1.4); // a short last row is centered, not stretched
-    else lastFull=h;
-    place(row,h-0.5);
+  const set=(f,a,h)=>{f.style.width=Math.floor(a*h)+"px";f.style.setProperty("--rh",(h-0.5)+"px")};
+  const sumAr=list=>list.reduce((t,i)=>t+ar[i],0);
+  const row=(list,width)=>{const h=(width-gap*(list.length-1))/sumAr(list);list.forEach(i=>set(figs[i],ar[i],h));return h};
+  const n=figs.length, rest=cols===3?n%3:0, b=rest===1&&n>=4?4:rest===2&&n>=5?5:0;
+  let k=0, lastH=null;
+  for(;k+cols<=n-b;k+=cols) lastH=row([...Array(cols).keys()].map(j=>k+j),W);
+  if(k<n-b){ // short last row (narrow desktops): centered, not stretched
+    const list=[...Array(n-b-k).keys()].map(j=>k+j), h=Math.min((W-gap*(list.length-1))/sumAr(list),lastH||W/3);
+    list.forEach(i=>set(figs[i],ar[i],h));
+  }
+  if(!b) return;
+  const block=[...Array(b).keys()].map(j=>n-b+j);
+  const P=block.reduce((m,i)=>ar[i]<ar[m]?i:m,block[0]), others=block.filter(i=>i!==P);
+  const top=others.slice(0,2), bot=others.slice(2), s1=1/sumAr(top), s2=1/sumAr(bot);
+  const cap=list=>Math.max(0,...list.map(i=>{const c=figs[i].querySelector("figcaption");return c?c.offsetHeight+10:0}));
+  const solve=()=>{ // tall work's height so its bottom lines up with the second row beside it
+    const extra=cap(top)+vgap+cap(bot)-cap([P]);
+    return ((W-gap)*(s1+s2)-gap*((top.length-1)*s1+(bot.length-1)*s2)+extra)/(1+ar[P]*(s1+s2));
+  };
+  let H=solve();
+  if(ar[P]*H>W*0.5){ // no work narrow enough to stand tall: plain rows instead
+    if(b===4){row(block.slice(0,2),W);row(block.slice(2),W)} else {row(block.slice(0,3),W);row(block.slice(3),W)}
+    return;
+  }
+  const wrap=document.createElement("div"); wrap.className="wb";
+  const col=document.createElement("div"); col.className="wb-col";
+  const r1=document.createElement("div"); r1.className="wb-row"; top.forEach(i=>r1.appendChild(figs[i]));
+  const r2=document.createElement("div"); r2.className="wb-row"; bot.forEach(i=>r2.appendChild(figs[i]));
+  col.append(r1,r2);
+  if(block.indexOf(P)<b/2) wrap.append(figs[P],col); else wrap.append(col,figs[P]);
+  box.appendChild(wrap);
+  for(let pass=0;pass<2;pass++){ // second pass uses the real caption heights
+    if(pass) H=solve();
+    set(figs[P],ar[P],H);
+    const Wc=W-gap-Math.floor(ar[P]*H); row(top,Wc); row(bot,Wc);
   }
 }
 addEventListener("resize",()=>{clearTimeout(window.__lw);window.__lw=setTimeout(layoutWorks,100)});
