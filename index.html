@@ -869,7 +869,7 @@ function artistView(id){
     <div class="artist-info">
       <h1 class="artist-name">${esc(a.name)}${a.nameEn?` <bdi class="an-en" dir="ltr" lang="en">${esc(a.nameEn)}</bdi>`:""}</h1>
       ${a.website?`<a class="artist-site" href="https://${esc(a.website)}" target="_blank" rel="noopener"><bdi dir="ltr">${esc(a.website)}</bdi></a>`:""}
-      ${a.email?`<a class="artist-site" href="mailto:${esc(a.email)}"><bdi dir="ltr">${esc(a.email)}</bdi></a>`:""}
+      ${a.email&&!a.website?`<a class="artist-site" href="mailto:${esc(a.email)}"><bdi dir="ltr">${esc(a.email)}</bdi></a>`:""}
       ${a.cv?`<section class="cv">${a.cv.map(sec=>`
         <div class="cv-sec">${sec.h?`<h2 class="cv-h">${esc(sec.h)}</h2>`:""}
           <dl class="cv-rows">${sec.rows.map(r=>{const i=typeof r[2]==="string"?r[2].length:r[1].indexOf(", ");
