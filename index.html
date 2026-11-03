@@ -310,7 +310,7 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .press-list li:last-child{border-bottom:1px solid var(--line)}
 .press-list a{color:var(--muted);text-decoration:none}
 .press-list a:hover{font-weight:600}
-@media (max-width:640px){.press{margin-top:48px}.press-list{font-size:13px}}
+@media (max-width:640px){.press{margin-top:48px}.press-list{font-size:13px}}.press.press-page{margin-top:0}
 
 /* Current exhibition inner page: 2 works per row */
 @media (min-width:640px){.gallery.two{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}}
@@ -443,6 +443,7 @@ footer.site{font-size:14px}
         <li><a href="#about" data-route="about">אודות חנינא</a></li>
         <li><a href="#artists" data-route="artists">אמני חנינא</a></li>
         <li><a href="#archive" data-route="archive">ארכיון</a></li>
+        <li><a href="#press" data-route="press">כתבות</a></li>
         <li><a href="#shop" data-route="shop">חנות</a></li>
         <li><a href="#contact" data-route="contact">צור קשר</a></li>
       </ul>
@@ -1121,9 +1122,10 @@ const views={
       <figure class="about-past ap-m3"><img src="img/about-mifal3.jpg" alt="גלריה חנינא בשביל המפעל 3" width="1042" height="700"><figcaption>גלריה חנינא, שביל המפעל 3, תל אביב (2019-2014)</figcaption></figure>
       <figure class="about-past ap-mr"><img src="img/about-meretz.jpg" alt="גלריה חנינא בשביל המרץ 5" width="1049" height="700"><figcaption>גלריה חנינא, שביל המרץ 5, תל אביב (2025-2019)</figcaption></figure>
       <figure class="about-past ap-m5"><img src="img/about-mifal.jpg" alt="גלריה חנינא בשביל המפעל 5" width="768" height="1024"><figcaption>גלריה חנינא, שביל המפעל 5, תל אביב (2026-)</figcaption></figure>
-    </div>
-    <section class="press">
-      <h2 class="press-h">עיתונות <bdi dir="ltr" lang="en">Press</bdi></h2>
+    </div>`,
+  press:()=>`
+    <h1 class="page-title">כתבות<bdi class="pt-en" dir="ltr" lang="en">Press</bdi></h1>
+    <section class="press press-page">
       <ul class="press-list">${SITE.press.map(x=>`<li>${x.by&&x.by!==x.src?`${esc(x.by)}, `:""}<a href="${esc(x.u)}" target="_blank" rel="noopener"><bdi>${esc(x.t)}</bdi></a>, ${esc(x.src)}, <bdi>${esc(x.d)}</bdi></li>`).join("")}</ul>
     </section>`,
   artists:()=>`
