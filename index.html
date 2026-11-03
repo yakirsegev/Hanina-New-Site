@@ -896,7 +896,7 @@ let swipeX=null,swipeY=null,justSwiped=0;
 document.addEventListener("touchstart",e=>{const sl=e.target.closest("[data-slider]");if(!sl||e.touches.length>1||sl.querySelectorAll(".slide").length<2){swipeX=null;return}const t=e.touches[0];swipeX=t.clientX;swipeY=t.clientY},{passive:true});
 document.addEventListener("touchend",e=>{
   if(swipeX===null) return; const sl=e.target.closest("[data-slider]"); if(!sl||e.touches.length){swipeX=null;return}
-  if(visualViewport&&visualViewport.scale>1.01){swipeX=null;return} // zoomed in: let the finger pan, not change image
+  if(window.visualViewport&&visualViewport.scale>1.01){swipeX=null;return} // zoomed in: let the finger pan, not change image
   const t=e.changedTouches[0],dx=t.clientX-swipeX,dy=t.clientY-swipeY; swipeX=null;
   if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy)) return;
   const items=[...sl.querySelectorAll(".slide")],n=items.length,cur=items.findIndex(x=>!x.hidden);
