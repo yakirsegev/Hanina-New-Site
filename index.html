@@ -881,17 +881,19 @@ function layoutWorks(){
     box.classList.remove("justified"); figs.forEach(f=>{f.style.width="";f.style.removeProperty("--rh")}); return;
   }
   const W=box.clientWidth, gap=28, cols=matchMedia("(min-width:1050px)").matches?3:2;
-  const target=((W-gap*(cols-1))/cols)*0.72;
+  const target=((W-gap*(cols-1))/cols)*0.8;
   const ar=figs.map(f=>{const im=f.querySelector("img");return im&&im.naturalWidth?im.naturalWidth/im.naturalHeight:1.6});
   box.classList.add("justified");
-  let row=[],sum=0;
+  // Fixed number of works per row (3 on wide screens, 2 on narrower desktops)
   const place=(items,h)=>items.forEach(i=>{figs[i].style.width=Math.floor(ar[i]*h)+"px";figs[i].style.setProperty("--rh",h+"px")});
-  ar.forEach((a,i)=>{
-    row.push(i); sum+=a;
-    const h=(W-gap*(row.length-1))/sum;
-    if(h<=target){place(row,h-0.5);row=[];sum=0}
-  });
-  if(row.length) place(row,Math.min(target,(W-gap*(row.length-1))/sum)-0.5);
+  let lastFull=null;
+  for(let k=0;k<ar.length;k+=cols){
+    const row=[...Array(Math.min(cols,ar.length-k)).keys()].map(j=>k+j), sum=row.reduce((t,i)=>t+ar[i],0);
+    let h=(W-gap*(row.length-1))/sum;
+    if(row.length<cols) h=Math.min(h,lastFull||target*1.4); // a short last row is centered, not stretched
+    else lastFull=h;
+    place(row,h-0.5);
+  }
 }
 addEventListener("resize",()=>{clearTimeout(window.__lw);window.__lw=setTimeout(layoutWorks,100)});
 function setTones(){
