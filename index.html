@@ -350,8 +350,8 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .split-before+.gallery{margin-top:32px}
 /* Mobile: no wide image at the top of archive inner pages */
 @media (max-width:640px){.to-index{display:none}}
-/* Mobile: archive inner-page images span the full content width (inside the site margins), natural proportions, no frame */
-@media (max-width:640px){.gallery:not(.fill) .work .ph{aspect-ratio:auto;height:auto;background:transparent}.gallery:not(.fill) .work .ph img{width:100%;height:auto;object-fit:contain}}
+/* Mobile: archive inner-page and artist-page work images span the full content width (inside the site margins), centered, natural proportions, no frame */
+@media (max-width:640px){.gallery:not(.fill) .work .ph,.works .work .ph{aspect-ratio:auto;height:auto;background:transparent}.gallery:not(.fill) .work .ph img,.works .work .ph img{width:100%;height:auto;object-fit:contain;object-position:center center;margin-inline:auto}}
 
 /* Archive grid: 2 → 3 → 5 → 6 per row; stacked on phones */
 .year-filter{display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:32px;font-variant-numeric:tabular-nums}
