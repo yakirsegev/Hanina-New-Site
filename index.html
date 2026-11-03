@@ -676,6 +676,11 @@ function slider(slides){
     ${slides.length>1?`<div class="dots" role="tablist" aria-label="מעבר בין תמונות">${slides.map((_,i)=>`<button class="dot-btn" role="tab" aria-label="תמונה ${i+1}" aria-selected="${!i}" data-slide="${i}"></button>`).join("")}</div>`:""}
   </div>`;
 }
+// Home page slider: the exhibition's slides, then the rest of its work images, same frame
+function homeSlides(x){
+  const base=x.slides||[{img:x.img,label:""}], seen=new Set(base.map(s=>s.img));
+  return base.concat((x.works||[]).filter(w=>w.img&&!seen.has(w.img)&&seen.add(w.img)).map(w=>({img:w.img,label:""})));
+}
 function exhibitionView(x,isCurrent,detail){
   const home=isCurrent&&!detail;
   return `
@@ -691,7 +696,7 @@ function exhibitionView(x,isCurrent,detail){
         ${x.curator?`<div class="hero-curator">${esc(x.curatorLabel||"אוצרות")}: ${esc(x.curator)}${x.curatorEn?`&ensp;<bdi dir="ltr" lang="en">${esc(x.curatorLabelEn||"Curator")}: ${esc(x.curatorEn)}</bdi>`:""}</div>`:""}
       </div>
     </div>
-    ${home?`<div class="to-now" data-to-now title="לתערוכה">${slider(x.slides||[{img:x.img,label:""}])}</div>`:detail?"":`<div class="to-index" data-to-index title="חזרה לארכיון">${slider(x.slides||[{img:x.img,label:""}])}</div>`}
+    ${home?`<div class="to-now" data-to-now title="לתערוכה">${slider(homeSlides(x))}</div>`:detail?"":`<div class="to-index" data-to-index title="חזרה לארכיון">${slider(x.slides||[{img:x.img,label:""}])}</div>`}
   </section>
   ${detail?`<div class="split split-before">${textsBlock(x,true)}</div>`:""}
   ${home?"":`<div class="gallery${isCurrent?" fill two natural":""}">
@@ -847,7 +852,7 @@ document.addEventListener("keydown",e=>{
 function showSlide(sl,n,auto){
   const items=sl.querySelectorAll(".slide"), dots=sl.querySelectorAll(".dot-btn");
   items.forEach((el,i)=>el.hidden=i!==n); dots.forEach((d,i)=>d.setAttribute("aria-selected",String(i===n)));
-  if(!auto) startSlider(); // a click or swipe restarts the 5-second count
+  if(!auto) startSlider(); // a click or swipe restarts the 4-second count
 }
 // Desktop archive cards: if the English title would break across lines, move it whole to its own line
 function splitCardTitles(){
@@ -877,14 +882,14 @@ function setTones(){
 function startSlider(){
   clearInterval(slideTimer);
   const sl=app.querySelector("[data-slider]"); if(!sl||matchMedia("(prefers-reduced-motion:reduce)").matches) return;
-  // Home page only: crossfade to the next image every 5 seconds
+  // Home page only: crossfade to the next image every 4 seconds
   if(!sl.closest("[data-to-now]")) return;
   const n=sl.querySelectorAll(".slide").length; if(n<2) return;
   slideTimer=setInterval(()=>{
     if(!sl.isConnected){clearInterval(slideTimer);return}
     const items=[...sl.querySelectorAll(".slide")],cur=items.findIndex(x=>!x.hidden);
     showSlide(sl,(cur+1)%n,true);
-  },5000);
+  },4000);
 }
 // Swipe between slides on touch screens (RTL: dragging right brings the next image)
 let swipeX=null,swipeY=null,justSwiped=0;
