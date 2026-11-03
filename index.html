@@ -186,7 +186,7 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 
 /* Artist works page */
 .artist-top{display:grid;gap:32px 56px;grid-template-columns:minmax(0,1fr);margin-bottom:72px;align-items:start}
-@media (min-width:860px){.artist-top{grid-template-columns:minmax(0,340px) minmax(0,1fr)}}
+@media (min-width:860px){.artist-top{grid-template-columns:minmax(0,340px) minmax(0,1fr)}.artist-top:not(:has(.portrait)) .artist-info{grid-column:1/-1;width:calc(100% - 396px)}}
 .portrait img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;filter:grayscale(1)}
 .artist-info{display:grid;gap:6px;align-content:start}
 .artist-name{font-size:clamp(24px,2.6vw,34px);font-weight:400}
