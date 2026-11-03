@@ -554,7 +554,26 @@ const SITE = {
     {id:"a9", name:"ענבל מארי כהן", nameEn:"Inbal Marie Cohen", img:"img/a9.jpg", link:""},
     {id:"a10", name:"ראומה חיות", nameEn:"Reuma Chayot", img:"img/a10.jpg", link:""},
     {id:"a11", name:"מיכאל יגודין", nameEn:"Michael Igudin", img:"img/a11.jpg", link:""},
-    {id:"a12", name:"רועי קורן", nameEn:"Roey Koren", img:"img/a12.jpg", link:""},
+    {id:"a12", name:"רועי קורן", nameEn:"Roey Koren", img:"img/a12.jpg", link:"",
+      email:"roeykoren94@gmail.com",
+      cv:[
+        {h:"", rows:[
+          ["1990–1987","תואר ראשון (BFA), בצלאל אקדמיה לאמנות ועיצוב, ירושלים"],
+          ["2018–2013","בוגר \"הכולל\", סטודיו לציור עכשווי בהנחיית גיא אביטל ורן טננבאום"]]},
+        {h:"תערוכות יחיד", rows:[
+          ["2024","תערוכת יחיד, גלריה P8, ת״א"],
+          ["2024","תערוכת יחיד, מקום לאמנות, ת״א"],
+          ["2020","תערוכת יחיד, גלריה ND, רמת גן"]]},
+        {h:"תערוכות קבוצתיות", rows:[
+          ["2026","תערוכה זוגית, גלריה חנינא, ת״א"],
+          ["2025","תערוכה קבוצתית, מוזיאון ישראל, ירושלים"],
+          ["2023","תערוכה זוגית, גלריה חנינא, ת״א"],
+          ["2023","תערוכה קבוצתית, הגלריה העירונית, יבנה"],
+          ["2022","תערוכה קבוצתית, גלריה ND, רמת גן"],
+          ["2021","תערוכה קבוצתית, גלריה חנינא, ת״א"],
+          ["2020","תערוכה קבוצתית, גלריה חנינא, ת״א"],
+          ["2019","תערוכה קבוצתית, גלריה ND, רמת גן"]]}
+      ]},
     {id:"a13", name:"ציקי אייזנברג", nameEn:"Tziki Eisenberg", img:"img/a13.jpg", link:""},
     {id:"a14", name:"שירה גפשטיין", nameEn:"Shira Gepstein", img:"img/a14.jpg", link:""},
     {id:"a15", name:"אוסקר אבוש", nameEn:"Oscar Abosh", img:"img/a15.jpg", link:""}
@@ -762,6 +781,7 @@ function artistView(id){
     <div class="artist-info">
       <h1 class="artist-name">${esc(a.name)}${a.nameEn?` <bdi class="an-en" dir="ltr" lang="en">${esc(a.nameEn)}</bdi>`:""}</h1>
       ${a.website?`<a class="artist-site" href="https://${esc(a.website)}" target="_blank" rel="noopener"><bdi dir="ltr">${esc(a.website)}</bdi></a>`:""}
+      ${a.email?`<a class="artist-site" href="mailto:${esc(a.email)}"><bdi dir="ltr">${esc(a.email)}</bdi></a>`:""}
       ${a.cv?`<section class="cv">${a.cv.map(sec=>`
         <div class="cv-sec">${sec.h?`<h2 class="cv-h">${esc(sec.h)}</h2>`:""}
           <dl class="cv-rows">${sec.rows.map(r=>{const i=r[1].indexOf(", ");
