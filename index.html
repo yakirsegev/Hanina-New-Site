@@ -190,7 +190,7 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .portrait img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;filter:grayscale(1)}
 .artist-info{display:grid;gap:6px;align-content:start}
 .artist-name{font-size:clamp(24px,2.6vw,34px);font-weight:400}
-.an-en{color:var(--muted);margin-inline-start:.4em}@media (max-width:640px){.artist-name .an-en{display:block;margin-inline-start:0}}
+.an-en{color:var(--muted);margin-inline-start:.4em}.artist-name.two-line .an-en{display:block;margin-inline-start:0}@media (max-width:640px){.artist-name .an-en{display:block;margin-inline-start:0}}
 .artist-site{font-family:var(--mono);font-size:14px;color:var(--muted)}
 .artist-site:hover{font-weight:500}
 .works{display:grid;gap:40px 28px;grid-template-columns:minmax(0,1fr)}
@@ -716,7 +716,7 @@ const SITE = {
         {img:"img/a8-w12.jpg", title:""}
       ]},
     {id:"a9", name:"ענבל מארי כהן", nameEn:"Inbal Marie Cohen", img:"img/a9.jpg", link:"", portrait:"img/a9-portrait2.jpg"},
-    {id:"a10", name:"ראומה זוהר חיות", nameEn:"Reuma Zoher Chayot", img:"img/a10.jpg", link:"", portrait:"img/a10-portrait.jpg",
+    {id:"a10", name:"ראומה זוהר חיות", nameEn:"Reuma Zoher Chayot", img:"img/a10.jpg", link:"", portrait:"img/a10-portrait.jpg", nameBreak:true, website:"www.reumazoherchayot.com",
       works:[
         {img:"img/a10-w1.jpg", title:""},
         {img:"img/a10-w2.jpg", title:""},
@@ -1146,7 +1146,7 @@ function artistView(id){
   <header class="artist-top">
     ${a.portrait!==undefined?`<div class="portrait">${a.portrait?`<img src="${esc(a.portrait)}" alt="${esc(a.name)}">`:ph("","דיוקן","tall")}</div>`:""}
     <div class="artist-info">
-      <h1 class="artist-name">${esc(a.name)}${a.nameEn?` <bdi class="an-en" dir="ltr" lang="en">${esc(a.nameEn)}</bdi>`:""}</h1>
+      <h1 class="artist-name${a.nameBreak?" two-line":""}">${esc(a.name)}${a.nameEn?` <bdi class="an-en" dir="ltr" lang="en">${esc(a.nameEn)}</bdi>`:""}</h1>
       ${a.website?`<a class="artist-site" href="https://${esc(a.website)}" target="_blank" rel="noopener"><bdi dir="ltr">${esc(a.website)}</bdi></a>`:""}
       ${a.email&&!a.website?`<a class="artist-site" href="mailto:${esc(a.email)}"><bdi dir="ltr">${esc(a.email)}</bdi></a>`:""}
       ${a.cv?`<section class="cv">${a.cv.map(sec=>`
