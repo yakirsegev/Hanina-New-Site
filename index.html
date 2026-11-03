@@ -121,6 +121,11 @@ h2{font-size:28px;line-height:1.2}
 .hl-date{white-space:nowrap}
 .hero .artist{font-size:20px}
 .slider{position:relative}
+/* Slides stack in one grid cell and crossfade */
+.slides{display:grid}
+.slides>.slide{grid-area:1/1;opacity:1;visibility:visible;transition:opacity 1.2s ease,visibility 0s linear 0s}
+.slides>.slide[hidden]{display:block;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s linear 1.2s}
+@media (prefers-reduced-motion:reduce){.slides>.slide,.slides>.slide[hidden]{transition:none}}
 .slider .ph.wide{aspect-ratio:2.55/1}
 @media (max-width:640px){.slider .ph.wide{aspect-ratio:4/3}}
 .dots{position:absolute;bottom:12px;inset-inline:0;display:flex;justify-content:center;gap:7px}
@@ -839,9 +844,10 @@ document.addEventListener("keydown",e=>{
   if(e.key==="ArrowLeft") openLightbox(+lb.dataset.i+1);
   if(e.key==="ArrowRight") openLightbox(+lb.dataset.i-1);
 });
-function showSlide(sl,n){
+function showSlide(sl,n,auto){
   const items=sl.querySelectorAll(".slide"), dots=sl.querySelectorAll(".dot-btn");
   items.forEach((el,i)=>el.hidden=i!==n); dots.forEach((d,i)=>d.setAttribute("aria-selected",String(i===n)));
+  if(!auto) startSlider(); // a click or swipe restarts the 5-second count
 }
 // Desktop archive cards: if the English title would break across lines, move it whole to its own line
 function splitCardTitles(){
@@ -871,7 +877,14 @@ function setTones(){
 function startSlider(){
   clearInterval(slideTimer);
   const sl=app.querySelector("[data-slider]"); if(!sl||matchMedia("(prefers-reduced-motion:reduce)").matches) return;
-  // No autoplay: images change only when the visitor clicks a dot or swipes.
+  // Home page only: crossfade to the next image every 5 seconds
+  if(!sl.closest("[data-to-now]")) return;
+  const n=sl.querySelectorAll(".slide").length; if(n<2) return;
+  slideTimer=setInterval(()=>{
+    if(!sl.isConnected){clearInterval(slideTimer);return}
+    const items=[...sl.querySelectorAll(".slide")],cur=items.findIndex(x=>!x.hidden);
+    showSlide(sl,(cur+1)%n,true);
+  },5000);
 }
 // Swipe between slides on touch screens (RTL: dragging right brings the next image)
 let swipeX=null,swipeY=null,justSwiped=0;
