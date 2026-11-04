@@ -1288,7 +1288,7 @@ const views={
     <p class="note">כאן יחובר מערך התשלומים הקיים. כל פריט יכול לקבל קישור לדף רכישה (שדה <span class="en">link</span> בתוכן).</p>
     <div class="shop">
       ${SITE.shop.map(s=>`<div class="item">
-        ${ph(s.img,s.title,"sq")}
+        ${s.img?`<button class="zoom" data-zoom="${SITE.shop.filter(b=>b.img).indexOf(s)}" aria-label="הגדלה: ${esc(s.title)}">${ph(s.img,s.title,"sq")}</button>`:ph(s.img,s.title,"sq")}
         <strong>${esc(s.title)}</strong>
         <span>${esc(s.artist)}</span>
         ${s.price?`<span class="price">${esc(s.price)}</span>`:""}
@@ -1343,6 +1343,7 @@ function currentWorks(){
   if(h.startsWith("artist-")) list=SITE.artists.find(x=>x.id===h.slice(7))?.works;
   else if(h.startsWith("exh-")) list=SITE.archive.find(x=>x.id===h.slice(4))?.works;
   else if(h==="current"||h==="now") list=SITE.current.works;
+  else if(h==="shop") list=SITE.shop.map(b=>({img:b.img,title:b.artist?b.title+" / "+b.artist:b.title}));
   return (list||[]).filter(w=>w.img).map(w=>({img:w.img,title:w.title||w.caption||w.details||"",photo:w.photo||""}));
 }
 function openLightbox(i){
