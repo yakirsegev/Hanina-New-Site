@@ -390,6 +390,7 @@ h1.page-title{cursor:pointer}
 .item{display:grid;gap:8px;align-content:start}
 .item .price{font-variant-numeric:tabular-nums}
 .item .ph:not(.empty){background:transparent}.item .ph img{object-fit:contain}
+.item .buy{justify-self:start;margin-top:6px;text-decoration:none}
 .item .sold{color:#d0021b;font-weight:700;justify-self:start}
 .note{border:1px dashed var(--line);padding:14px 18px;color:var(--muted);font-size:15px;margin-bottom:36px;max-width:62ch}
 
@@ -1291,7 +1292,7 @@ const views={
         <strong>${esc(s.title)}</strong>
         <span>${esc(s.artist)}</span>
         ${s.price?`<span class="price">${esc(s.price)}</span>`:""}
-        ${s.soldOut?`<span class="sold" lang="en" dir="ltr">Sold Out</span>`:s.link?`<a class="btn" href="${esc(s.link)}" target="_blank" rel="noopener">לרכישה</a>`:`<span class="btn" aria-disabled="true">לרכישה</span>`}
+        ${s.soldOut?`<span class="sold" lang="en" dir="ltr">Sold Out</span>`:s.link?`<a class="btn buy" href="${esc(s.link)}" target="_blank" rel="noopener">לרכישה</a>`:`<a class="btn buy" href="mailto:haninanew@gmail.com?subject=${encodeURIComponent("רכישת ספר: "+s.title)}">לרכישה</a>`}
       </div>`).join("")}
     </div>`,
   contact:()=>`
