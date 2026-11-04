@@ -389,6 +389,8 @@ h1.page-title{cursor:pointer}
 .shop{display:grid;gap:40px 24px;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr))}
 .item{display:grid;gap:8px;align-content:start}
 .item .price{font-variant-numeric:tabular-nums}
+.item .ph:not(.empty){background:transparent}.item .ph img{object-fit:contain}
+.item .sold{color:#d0021b;font-weight:700;justify-self:start}
 .note{border:1px dashed var(--line);padding:14px 18px;color:var(--muted);font-size:15px;margin-bottom:36px;max-width:62ch}
 
 /* Contact */
@@ -1154,12 +1156,15 @@ const SITE = {
     {"id": "white-wedding", "title": "חתונה לבנה, אבטיח שחור", "text": ["התערוכה מפגישה את העבודות החמות ומלאות הרגש של יונת סינטרה, היוצרת ברישום, בציור ובפיסול, עם התצלומים, עבודת הווידאו והמיצב של מיכאל יגודין – יצירות נקיות ומדויקות שכמו קפאו בזמן.", "בעבודתו על טבע דומם בסטודיו, יגודין עובד בדומה לבמאי תיאטרון קאמרי – תהליך ארוך של זיקוק וצמצום, עד שהוא מגיע למיזנסצנה המדויקת. עבודותיו מזמינות התבוננות מדיטטיבית, המתחקה אחר הפרטים הקטנים הנסתרים בתוך הפריים: האבק על קופסת השחמט מול הפירות הטריים והעסיסיים, הסמליות החבויה בכל רכיב והצבתו במקומו המדויק.", "סינטרה מתחילה מרישום מודל עירום וטבע דומם בסטודיו, ויוצאת למסע חיפושים אחר היחסים הצורניים והמתח שנוצר בין החי לדומם, החשוף למכוסה, הריאליסטי למופשט. מה שמתחיל מאבטיח אדום בקומפוזיציה מפתה של מודל ופירות, הופך לחור שחור שמשתלט על הקנבס, דוחק הצידה את המודל ובולע בתוכו את הקומפוזיציה כולה.", "מיכאל יגודין ויונת סינטרה חווים בשנים האחרונות התכנסות בסטודיו, וכניעה למעשה היצירתי שמוביל אותם מתוך התת־מודע אל תוך החומר."], "textEn": ["The exhibition brings together the warm, emotionally charged works of Yonat Sintra, who works in drawing, painting and sculpture, with the photographs, video work and installation of Michael Igudin – clean, precise works that seem frozen in time.", "In his still-life work in the studio, Igudin operates much like a director of chamber theater – a long process of distillation and reduction until he arrives at the precise mise-en-scène. His works invite meditative contemplation that traces the small details hidden within the frame: the dust on the chess box set against fresh, juicy fruit, the symbolism concealed in every element and its placement in its exact spot.", "Sintra begins with drawing a nude model and still life in the studio, and sets out on a search for the formal relationships and the tension that arises between the living and the inanimate, the exposed and the covered, the realistic and the abstract. What begins as a red watermelon in a seductive composition of model and fruit turns into a black hole that takes over the canvas, pushing the model aside and swallowing the entire composition.", "In recent years, Michael Igudin and Yonat Sintra have both experienced a withdrawal into the studio and a surrender to the creative act, which leads them from the unconscious into the material."], "artists": ["מיכאל יגודין", "יונת סינטרה"], "artistsEn": ["Michael Igudin", "Yonat Sintra"], "start": "2023-01-05", "end": "2023-02-04", "curator": "לולה וילנקין", "img": "img/x-white-wedding-cover.jpg", "curatorEn": "Lola Vilenkin", "curatorLabel": "אוצרת", "curatorLabelEn": "Curator", "slides": [{"img": "img/x-white-wedding.jpg", "label": ""}], "works": [{"img": "img/x-white-wedding-cover.jpg", "caption": ""}, {"img": "img/x-white-wedding-w1.jpg", "caption": ""}, {"img": "img/x-white-wedding-w2.jpg", "caption": ""}, {"img": "img/x-white-wedding-w3.jpg", "caption": ""}]}
   ],
   shop: [
-    {id:"s1", title:"[שם העבודה / הפריט]", artist:"[שם האמן/ית]", price:"[מחיר] ₪", img:"", link:""},
-    {id:"s2", title:"[שם העבודה / הפריט]", artist:"[שם האמן/ית]", price:"[מחיר] ₪", img:"", link:""},
-    {id:"s3", title:"[קטלוג התערוכה]", artist:"[שם האמן/ית]", price:"[מחיר] ₪", img:"", link:""},
-    {id:"s4", title:"[הדפס במהדורה מוגבלת]", artist:"[שם האמן/ית]", price:"[מחיר] ₪", img:"", link:""},
-    {id:"s5", title:"[שם העבודה / הפריט]", artist:"[שם האמן/ית]", price:"[מחיר] ₪", img:"", link:""},
-    {id:"s6", title:"[שם העבודה / הפריט]", artist:"[שם האמן/ית]", price:"[מחיר] ₪", img:"", link:""}
+    {id:"book1", title:"משא: רועה, פרש וכלבה לבנה", artist:"שירה גפשטיין", price:"", img:"img/s-book1.jpg", link:""},
+    {id:"book2", title:"צא לדרך", artist:"", price:"", img:"img/s-book2.jpg", link:""},
+    {id:"book3", title:"חיותיות", artist:"יונתן הירשפלד, יקיר שגב", price:"", img:"img/s-book3.jpg", link:""},
+    {id:"book4", title:"דוד בעל החלומות", artist:"תום זיידמן־פרויד", price:"", img:"img/s-book4.jpg", link:"", soldOut:true},
+    {id:"book5", title:"לבנטינו | Circo Levantino", artist:"אליהו אריק בוקובזה", price:"", img:"img/s-book5.jpg", link:"", soldOut:true},
+    {id:"book6", title:"חנינא – מקום לאמנות עכשווית", artist:"עשר השנים הראשונות 2009–2018", price:"", img:"img/s-book6.jpg", link:""},
+    {id:"book7", title:"תולדות האמנית", artist:"נעמי טנהאוזר", price:"", img:"img/s-book7.jpg", link:""},
+    {id:"book8", title:"שטיחים וצדפים", artist:"אודרי ברגנר", price:"", img:"img/s-book8.jpg", link:""},
+    {id:"book9", title:"חתכי נעורים", artist:"ההדפסים המוקדמים של ליאו רוט", price:"", img:"img/s-book9.jpg", link:""}
   ]
 };
 
@@ -1282,11 +1287,11 @@ const views={
     <p class="note">כאן יחובר מערך התשלומים הקיים. כל פריט יכול לקבל קישור לדף רכישה (שדה <span class="en">link</span> בתוכן).</p>
     <div class="shop">
       ${SITE.shop.map(s=>`<div class="item">
-        ${ph(s.img,"פריט","tall")}
+        ${ph(s.img,s.title,"sq")}
         <strong>${esc(s.title)}</strong>
         <span>${esc(s.artist)}</span>
-        <span class="price">${esc(s.price)}</span>
-        ${s.link?`<a class="btn" href="${esc(s.link)}" target="_blank" rel="noopener">לרכישה</a>`:`<span class="btn" aria-disabled="true">לרכישה</span>`}
+        ${s.price?`<span class="price">${esc(s.price)}</span>`:""}
+        ${s.soldOut?`<span class="sold" lang="en" dir="ltr">Sold Out</span>`:s.link?`<a class="btn" href="${esc(s.link)}" target="_blank" rel="noopener">לרכישה</a>`:`<span class="btn" aria-disabled="true">לרכישה</span>`}
       </div>`).join("")}
     </div>`,
   contact:()=>`
