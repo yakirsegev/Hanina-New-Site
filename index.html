@@ -267,7 +267,8 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 
 /* Mobile footer: no grey text */
 @media (max-width:640px){
-  footer.site p,footer.site .hours dt,footer.site .hours dd,footer.site .hours .e,footer.site .legal,footer.site }
+  footer.site p,footer.site .hours dt,footer.site .hours dd,footer.site .hours .e,footer.site .legal{color:var(--fg)}
+}
 
 /* IBM Plex Mono has very wide spaces; tighten word spacing wherever it is used */
 .meta,.en,.card .a,.card .d,.artist-site,.lb-bar,.hours .t,.hours .e,footer.site,.eyebrow,figcaption,.note,.back,.copy,.contact h3,.item .price,.cv-rows dt{word-spacing:-.3em}
@@ -418,7 +419,8 @@ footer p{margin:0 0 3px;color:var(--muted)}
 
 /* Small text + footer in IBM Plex Mono (Hebrew letters fall back to IBM Plex Sans Hebrew) */
 footer.site,footer.site input,footer.site .btn,
-.meta,.eyebrow,figcaption,.card .a,.card .d,.note,.year-filter button,.back,.facts dt,.copy,.contact h3,.item .price,footer.site{font-size:14px}
+.meta,.eyebrow,figcaption,.card .a,.card .d,.note,.year-filter button,.back,.facts dt,.copy,.contact h3,.item .price{font-family:var(--mono)}
+footer.site{font-size:14px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
