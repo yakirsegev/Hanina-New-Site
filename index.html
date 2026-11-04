@@ -1091,7 +1091,7 @@ function exhibitionView(x,isCurrent,detail){
         <div class="hl-date"><bdi>${x.datesText?esc(x.datesText):range(x.start,x.end)}</bdi></div>
       </div>
       <div class="hero-sub">
-        <div class="hero-artist${x.artists.length>4?" many":""}">${x.artists.map(nmSpan).join(", ")}${x.artistsEn?` <bdi dir="ltr" lang="en">${x.artistsEn.map(nmSpan).join(", ")}</bdi>`:""}</div>
+        <div class="hero-artist${x.artists.length>4?" many":""}"><span class="nms">${x.artists.map(nmSpan).join(", ")}</span>${x.artistsEn?` <bdi class="nms" dir="ltr" lang="en">${x.artistsEn.map(nmSpan).join(", ")}</bdi>`:""}</div>
         ${x.curator?`<div class="hero-curator">${esc(x.curatorLabel||"אוצרות")}: ${esc(x.curator)}${x.curatorEn?`&ensp;<bdi dir="ltr" lang="en">${esc(x.curatorLabelEn||"Curator")}: ${esc(x.curatorEn)}</bdi>`:""}</div>`:""}
       </div>
     </div>
@@ -1316,6 +1316,24 @@ document.addEventListener("click",e=>{
   const h=a.getAttribute("href").slice(1); if(!h) return;
   e.preventDefault(); go(h);
 });
+/* Mobile: artist-name lists may tighten letter-spacing by up to ~4px per line, only when that pulls a name up and saves a line */
+function fitNames(){
+  const els=app.querySelectorAll(".hero-artist .nms,.card .a");
+  els.forEach(t=>t.style.letterSpacing="");
+  if(!matchMedia("(max-width:640px)").matches) return;
+  const lines=t=>new Set([...t.querySelectorAll(".nm")].map(n=>Math.round(n.getBoundingClientRect().top))).size;
+  els.forEach(t=>{
+    const l0=lines(t); if(l0<2) return;
+    const perLine=t.textContent.length/l0, max=4/perLine;
+    for(let ls=.02;ls<=max+1e-6;ls+=.02){
+      t.style.letterSpacing=`-${ls.toFixed(2)}px`;
+      if(lines(t)<l0) return;
+    }
+    t.style.letterSpacing="";
+  });
+}
+addEventListener("resize",()=>{clearTimeout(fitNames.t);fitNames.t=setTimeout(fitNames,150)});
+if(document.fonts) document.fonts.ready.then(()=>fitNames());
 function route(backY){
   const h=currentRoute||(location.hash||"#current").slice(1)||"current";
   let html, nav=h;
@@ -1330,6 +1348,7 @@ function route(backY){
   startSlider();
   setTones();
   splitCardTitles();
+  fitNames();
   const r=currentRoute||location.hash.slice(1);
   if(typeof backY==="number"){ archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,backY)); }
   else if(r==="archive" && archiveScroll!==null){ const y=archiveScroll; archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,y)); }
@@ -1337,7 +1356,7 @@ function route(backY){
 }
 app.addEventListener("click",e=>{
   const yb=e.target.closest("[data-year]");
-  if(yb){archiveYear=yb.dataset.year;app.innerHTML=views.archive(archiveYear);return}
+  if(yb){archiveYear=yb.dataset.year;app.innerHTML=views.archive(archiveYear);fitNames();return}
   const tg=e.target.closest("[data-toggle-texts]");
   if(tg){const w=tg.parentElement;const o=w.classList.toggle("open");tg.setAttribute("aria-expanded",String(o));return}
   const db=e.target.closest("[data-slide]");
