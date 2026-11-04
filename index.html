@@ -225,6 +225,7 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .lb-btn:hover{font-weight:500}
 .lb-stage{display:grid;place-items:center;min-height:0}
 .lb-stage .ph{width:min(100%,1100px);max-height:100%}
+.lb-stage .ph{cursor:zoom-out}
 .lb-cap{text-align:center;font-size:15px;display:flex;flex-direction:column;gap:2px}
 .lb-stage+.lb-bar{align-items:baseline;padding-top:12px}
 .lb-stage+.lb-bar .lb-btn{padding-block:0}
@@ -1349,6 +1350,7 @@ function openLightbox(i){
 function closeLightbox(){ if(lb){lb.hidden=true;} }
 document.addEventListener("click",e=>{
   const z=e.target.closest("[data-zoom]"); if(z){openLightbox(+z.dataset.zoom);return}
+  if(lb&&!lb.hidden&&e.target.closest(".lb-stage .ph")){closeLightbox();return} // clicking the open image returns to the gallery
   const b=e.target.closest("[data-lb]"); if(!b) return;
   const i=+lb.dataset.i; b.dataset.lb==="close"?closeLightbox():openLightbox(i+(b.dataset.lb==="next"?1:-1));
 });
