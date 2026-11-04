@@ -189,6 +189,7 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 @media (min-width:860px){.artist-top{grid-template-columns:minmax(0,340px) minmax(0,1fr)}.artist-top:not(:has(.portrait)) .artist-info{grid-column:1/-1;width:calc(100% - 396px)}}
 .portrait img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;filter:grayscale(1)}
 .portrait a{display:block;cursor:pointer}
+h1.page-title{cursor:pointer}
 .artist-info{display:grid;gap:6px;align-content:start}
 .artist-name{font-size:clamp(24px,2.6vw,34px);font-weight:400}
 .an-en{color:var(--muted);margin-inline-start:.4em}.artist-name.two-line .an-en{display:block;margin-inline-start:0}@media (max-width:640px){.artist-name .an-en{display:block;margin-inline-start:0}}
@@ -1429,6 +1430,7 @@ function go(h){
 try{ history.scrollRestoration="manual"; }catch(e){}
 // Handle in-page links in script so navigation works even where the frame blocks hash changes
 document.addEventListener("click",e=>{
+  if(e.target.closest("h1.page-title")&&!e.target.closest("a")){e.preventDefault();go("current");return} // big page titles lead home
   const a=e.target.closest('a[href^="#"]'); if(!a) return;
   const h=a.getAttribute("href").slice(1); if(!h) return;
   e.preventDefault(); go(h);
