@@ -1105,7 +1105,7 @@ function exhibitionView(x,isCurrent,detail){
 }
 
 /* Artist names are never split across lines on mobile; names listed here may break only at "|" (e.g. double surnames) */
-const NAME_BREAKS={"יעל ורטהיים סואן":"יעל ורטהיים|סואן","Yael Wertheim Suan":"Yael Wertheim|Suan","ראומה זוהר חיות":"ראומה זוהר|חיות","Reuma Zoher Chayot":"Reuma Zoher|Chayot"};
+const NAME_BREAKS={"יעל ורטהיים סואן":"יעל ורטהיים|סואן","Yael Wertheim Suan":"Yael Wertheim|Suan","ראומה זוהר חיות":"ראומה זוהר|חיות","Reuma Zoher Chayot":"Reuma Zoher|Chayot","חגית אונמני רובינשטיין":"חגית אונמני|רובינשטיין","Hagit Onmani Rubinstein":"Hagit Onmani|Rubinstein"};
 function nmSpan(n){return (NAME_BREAKS[n]||n).split("|").map(p=>`<span class="nm">${esc(p)}</span>`).join(" ")}
 const views={
   current:()=>exhibitionView(SITE.current,true,false),
