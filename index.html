@@ -375,8 +375,8 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .card .t{font-weight:700;font-size:16px;line-height:1.35}
 .card .a{font-size:15px;line-height:1.4}
 .card .ae{font-size:14px;color:var(--muted)}
-/* Mobile archive: never split an artist's first and last name across lines */
-@media (max-width:640px){.card .a .nm{white-space:nowrap}}
+/* Mobile (archive cards + exhibition pages): never split an artist's first and last name across lines */
+@media (max-width:640px){.card .a .nm,.hero-artist .nm{white-space:nowrap}}
 .card .d{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 
 .card .ph{transition:opacity .2s}
@@ -1091,7 +1091,7 @@ function exhibitionView(x,isCurrent,detail){
         <div class="hl-date"><bdi>${x.datesText?esc(x.datesText):range(x.start,x.end)}</bdi></div>
       </div>
       <div class="hero-sub">
-        <div class="hero-artist${x.artists.length>4?" many":""}">${esc(x.artists.join(", "))}${x.artistsEn?` <bdi dir="ltr" lang="en">${esc(x.artistsEn.join(", "))}</bdi>`:""}</div>
+        <div class="hero-artist${x.artists.length>4?" many":""}">${x.artists.map(n=>`<span class="nm">${esc(n)}</span>`).join(", ")}${x.artistsEn?` <bdi dir="ltr" lang="en">${x.artistsEn.map(n=>`<span class="nm">${esc(n)}</span>`).join(", ")}</bdi>`:""}</div>
         ${x.curator?`<div class="hero-curator">${esc(x.curatorLabel||"אוצרות")}: ${esc(x.curator)}${x.curatorEn?`&ensp;<bdi dir="ltr" lang="en">${esc(x.curatorLabelEn||"Curator")}: ${esc(x.curatorEn)}</bdi>`:""}</div>`:""}
       </div>
     </div>
