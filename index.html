@@ -188,6 +188,7 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .artist-top{display:grid;gap:32px 56px;grid-template-columns:minmax(0,1fr);margin-bottom:72px;align-items:start}
 @media (min-width:860px){.artist-top{grid-template-columns:minmax(0,340px) minmax(0,1fr)}.artist-top:not(:has(.portrait)) .artist-info{grid-column:1/-1;width:calc(100% - 396px)}}
 .portrait img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;filter:grayscale(1)}
+.portrait a{display:block;cursor:pointer}
 .artist-info{display:grid;gap:6px;align-content:start}
 .artist-name{font-size:clamp(24px,2.6vw,34px);font-weight:400}
 .an-en{color:var(--muted);margin-inline-start:.4em}.artist-name.two-line .an-en{display:block;margin-inline-start:0}@media (max-width:640px){.artist-name .an-en{display:block;margin-inline-start:0}}
@@ -1309,7 +1310,7 @@ function artistView(id){
   return `
   <a class="back" href="#artists">→ כל האמנים</a>
   <header class="artist-top">
-    ${a.portrait!==undefined?`<div class="portrait">${a.portrait?`<img src="${esc(a.portrait)}" alt="${esc(a.name)}">`:ph("","דיוקן","tall")}</div>`:""}
+    ${a.portrait!==undefined?`<div class="portrait">${a.portrait?`<a href="#artists" data-route="artists" aria-label="חזרה לאמני חנינא"><img src="${esc(a.portrait)}" alt="${esc(a.name)}"></a>`:ph("","דיוקן","tall")}</div>`:""}
     <div class="artist-info">
       <h1 class="artist-name${a.nameBreak?" two-line":""}">${esc(a.name)}${a.nameEn?` <bdi class="an-en" dir="ltr" lang="en">${esc(a.nameEn)}</bdi>`:""}</h1>
       ${a.website?`<a class="artist-site" href="https://${esc(a.website)}" target="_blank" rel="noopener"><bdi dir="ltr">${esc(a.website)}</bdi></a>`:""}
