@@ -329,6 +329,7 @@ h1.page-title{cursor:pointer}
 /* Footer: Facebook link sits on the same line as the email (desktop: shared rows via subgrid) */
 .fb{margin:12px 0 0;display:flex;gap:20px}
 .fb-link:hover{font-weight:500}
+a.fb-link[href*="facebook"]{color:#1877f2}a.fb-link[href*="instagram"]{color:#c13584}
 @media (min-width:860px){
   body footer.site .wrap{row-gap:0}
   footer.site .wrap>div:nth-child(1),footer.site .wrap>div:nth-child(2){display:grid;grid-row:1 / span 5;grid-template-rows:subgrid;row-gap:0}
@@ -1350,7 +1351,7 @@ const views={
         <dl class="hours">
         <dt>ד׳–ה׳</dt><dd class="t"><bdi dir="ltr">13:00–19:00</bdi></dd><dd class="e"><bdi dir="ltr">Wed.–Thu.</bdi></dd>
         <dt>ו׳–ש׳</dt><dd class="t"><bdi dir="ltr">10:00–14:00</bdi></dd><dd class="e"><bdi dir="ltr">Fri.–Sat.</bdi></dd>
-      </dl></div>
+      </dl><p class="fb"><a class="en fb-link" href="https://www.facebook.com/hanina.new" target="_blank" rel="noopener">Facebook</a><a class="en fb-link" href="https://www.instagram.com/haninagallery/" target="_blank" rel="noopener">Instagram</a></p></div>
       <div class="c-mail-block"><h3>אימייל</h3>
         <p><span class="en" id="mail">haninanew@gmail.com</span><button class="copy" data-copy="haninanew@gmail.com">העתקה</button></p>
       </div>
