@@ -1253,7 +1253,7 @@ function exhibitionView(x,isCurrent,detail){
     <div class="hero-head">
       <div class="hero-top">
         <h1 class="hero-line">${detail?`<a class="title-home" href="#current" title="חזרה לעמוד הראשי">`:""}<span class="hl-title">${esc(x.title)}</span>${x.titleEn?` <bdi class="hl-en" dir="ltr" lang="en">${esc(x.titleEn)}</bdi>`:""}${detail?`</a>`:""}</h1>
-        <div class="hl-date">${home?`<span class="now-tag"><bdi dir="ltr" lang="en">Now Showing</bdi> עכשיו בחנינא</span>`:""}<bdi>${x.datesText?esc(x.datesText):range(x.start,x.end)}</bdi></div>
+        <div class="hl-date">${home?`<span class="now-tag">עכשיו בחנינא <bdi dir="ltr" lang="en">Now Showing</bdi></span>`:""}<bdi>${x.datesText?esc(x.datesText):range(x.start,x.end)}</bdi></div>
       </div>
       <div class="hero-sub">
         <div class="hero-artist${x.artists.length>4?" many":""}"><span class="nms">${x.artists.map(nmSpan).join(", ")}</span>${x.artistsEn?` <bdi class="nms" dir="ltr" lang="en">${x.artistsEn.map(nmSpan).join(", ")}</bdi>`:""}</div>
