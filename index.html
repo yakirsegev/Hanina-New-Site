@@ -421,6 +421,7 @@ a.fb-link[href*="facebook"]{color:#1877f2}a.fb-link[href*="instagram"]{color:#c1
 /* Entrance photo: below the details on desktop/tablet, above them on mobile */
 .contact-wrap{display:flex;flex-direction:column}.contact-photo{margin-top:56px}
 @media (max-width:640px){.contact-photo{order:-1;margin-top:0;margin-bottom:40px}}
+@media (max-width:640px){.contact{gap:24px}}
 /* Email: under the address (no heading) on desktop; own block with heading on mobile */
 .contact .c-mail{display:none;margin-top:20px}
 @media (min-width:641px){.contact .c-mail{display:block}.contact .c-mail-block{display:none}}
@@ -432,7 +433,7 @@ body[data-page="contact"] footer.site .wrap>div:nth-child(-n+2){display:none}
 body[data-page="contact"] footer.site{border-top:0}body[data-page="contact"] footer.site .wrap{padding-top:0}body[data-page="contact"] footer.site .legal{margin-top:0!important} /* contact page already shows these details */
 footer.site .wrap{display:grid;gap:32px;padding-block:40px;grid-template-columns:minmax(0,1fr)}
 @media (min-width:641px){footer.site .wrap{grid-template-columns:max-content max-content minmax(0,1fr);column-gap:72px}}
-@media (max-width:640px){footer.site .wrap{gap:22px;padding-block:28px 24px}footer.site .legal{padding-top:14px}}
+@media (max-width:640px){footer.site .wrap{gap:14px;padding-block:28px 24px}footer.site .legal{padding-top:12px}}
 .hours{display:grid;grid-template-columns:max-content max-content max-content;column-gap:16px;row-gap:4px;margin:0;justify-content:start}
 .hours dt,.hours dd{margin:0;white-space:nowrap;color:var(--muted)}
 .hours dt{color:inherit}
