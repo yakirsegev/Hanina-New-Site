@@ -8,9 +8,9 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Noto+Sans+Hebrew:wght@100..900&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Secular+One&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Narkiss Block (Yed NarkisBlockMF) — used only for running text and the nav; headings and bold text use Noto Sans Hebrew (Google Fonts, OFL) */
+/* Narkiss Block (Yed NarkisBlockMF) — used only for running text and the nav; headings and bold text use Secular One (Google Fonts, OFL) */
 @font-face{font-family:"Narkiss Block";src:url("fonts/NarkissBlock-Thin.woff2") format("woff2"),local("Yed NarkisBlockMF Thin");font-weight:200;font-style:normal;font-display:swap;unicode-range:U+0590-05FF,U+FB1D-FB4F,U+20AA}
 @font-face{font-family:"Narkiss Block";src:url("fonts/NarkissBlock-Regular.woff2") format("woff2"),local("Yed NarkisBlockMF");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0590-05FF,U+FB1D-FB4F,U+20AA}
 @font-face{font-family:"Narkiss Block";src:url("fonts/NarkissBlock-Medium.woff2") format("woff2"),local("Yed NarkisBlockMF Medium");font-weight:500;font-style:normal;font-display:swap;unicode-range:U+0590-05FF,U+FB1D-FB4F,U+20AA}
@@ -25,7 +25,7 @@
   --ph:#ecebe8;        /* image placeholder ground */
   --ph-mark:#c9c7c2;
   --accent:#8a2f22;    /* used only for hover/active and the "now showing" mark */
-  --display:"Noto Sans Hebrew", "Narkiss Block", "Archivo", "IBM Plex Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
+  --display:"Secular One", "Narkiss Block", "Archivo", "IBM Plex Sans Hebrew", "Arial Hebrew", Arial, sans-serif;
   --body:"Narkiss Block", "Archivo", "IBM Plex Sans Hebrew", "Arial Hebrew", "Segoe UI", Arial, sans-serif;
   --mono:"IBM Plex Mono", "IBM Plex Sans Hebrew", ui-monospace, monospace;
   --wrap:1280px;
@@ -199,7 +199,7 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .portrait a{display:block;cursor:pointer}
 h1.page-title{cursor:pointer}
 .artist-info{display:grid;gap:6px;align-content:start}
-.artist-name{font-size:clamp(24px,2.6vw,34px);font-weight:600}
+.artist-name{font-size:clamp(24px,2.6vw,34px);font-weight:400}
 .an-en{color:var(--muted);margin-inline-start:.4em}.artist-name.two-line .an-en{display:block;margin-inline-start:0}@media (max-width:640px){.artist-name .an-en{display:block;margin-inline-start:0}}
 .artist-site{font-family:var(--mono);font-size:14px;color:var(--muted)}
 .artist-site:hover{font-weight:500}
@@ -269,7 +269,7 @@ h1.page-title{cursor:pointer}
   .split-after{margin-top:24px}
   .hero-top,.hero-sub{display:contents}
   .hero-head{display:flex;flex-direction:column;gap:4px}
-  .hero-head .hero-line{order:2;font-size:30px;line-height:1.2;margin-top:10px;font-weight:600}
+  .hero-head .hero-line{order:2;font-size:30px;line-height:1.2;margin-top:10px;font-weight:500}
   .hero-head .hero-artist{order:1;font-size:18px;font-family:var(--mono);font-weight:500}
   .hero-head .hero-curator{order:3;font-size:13px;font-family:var(--mono);margin-inline-start:0;margin-top:14px;align-self:flex-start;text-align:right}
   .hero-head>*,.hero-top>*,.hero-sub>*{text-align:right}
@@ -452,8 +452,8 @@ footer p{margin:0 0 3px;color:var(--muted)}
 .home-link:hover{font-weight:500}
 .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
 
-/* Noto Sans Hebrew 600: headings and bold text */
-h1,h2,h3,.page-title,.hero-line,.notes-h,.contact h3,.press-h,.cv-rows .cv-t,.card .t,strong,b,.item .sold{font-family:var(--display);font-weight:600;font-synthesis:none}
+/* Secular One: headings and bold text (single weight — no synthetic bold) */
+h1,h2,h3,.page-title,.hero-line,.notes-h,.contact h3,.press-h,.cv-rows .cv-t,.card .t,strong,b,.item .sold{font-family:var(--display);font-weight:400;font-synthesis:none}
 /* Small text + footer in IBM Plex Mono (Hebrew letters fall back to IBM Plex Sans Hebrew) */
 footer.site,footer.site input,footer.site .btn,
 .meta,.eyebrow,figcaption,.card .a,.card .d,.note,.year-filter button,.back,.facts dt,.copy,.contact h3,.item .price{font-family:var(--mono)}
