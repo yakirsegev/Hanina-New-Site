@@ -332,7 +332,7 @@ h1.page-title{cursor:pointer}
 .fb{margin:12px 0 0;display:flex;gap:20px}
 .fb-link:hover{font-weight:500}
 a.fb-link[href*="facebook"]{color:#1877f2}a.fb-link[href*="instagram"]{color:#c13584}
-@media (min-width:860px){
+@media (min-width:641px){
   body footer.site .wrap{row-gap:0}
   footer.site .wrap>div:nth-child(1),footer.site .wrap>div:nth-child(2){display:grid;grid-row:1 / span 5;grid-template-rows:subgrid;row-gap:0}
   footer.site .wrap>div:nth-child(2) .hours{grid-row:2 / span 2;align-self:start}
@@ -423,7 +423,7 @@ footer.site{border-top:1px solid var(--line);font-size:15px}
 body[data-page="contact"] footer.site .wrap>div:nth-child(-n+2){display:none}
 body[data-page="contact"] footer.site{border-top:0}body[data-page="contact"] footer.site .wrap{padding-top:0}body[data-page="contact"] footer.site .legal{margin-top:0!important} /* contact page already shows these details */
 footer.site .wrap{display:grid;gap:32px;padding-block:40px;grid-template-columns:minmax(0,1fr)}
-@media (min-width:860px){footer.site .wrap{grid-template-columns:max-content max-content minmax(0,1fr);column-gap:72px}}
+@media (min-width:641px){footer.site .wrap{grid-template-columns:max-content max-content minmax(0,1fr);column-gap:72px}}
 .hours{display:grid;grid-template-columns:max-content max-content max-content;column-gap:16px;row-gap:4px;margin:0;justify-content:start}
 .hours dt,.hours dd{margin:0;white-space:nowrap;color:var(--muted)}
 .hours dt{color:inherit}
@@ -442,6 +442,13 @@ footer.site,footer.site input,footer.site .btn,
 .meta,.eyebrow,figcaption,.card .a,.card .d,.note,.year-filter button,.back,.facts dt,.copy,.contact h3,.item .price{font-family:var(--mono)}
 footer.site{font-size:14px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* Tablet / iPad (touch screens 641–1366px): taller slideshow images */
+@media (min-width:641px) and (max-width:1366px) and (hover:none) and (pointer:coarse){
+  body .slider .ph.wide,body .to-now .slider .ph.wide,body .to-index .slider .ph.wide{aspect-ratio:2/1}
+}
+@media (min-width:641px) and (max-width:1366px) and (hover:none) and (pointer:coarse) and (orientation:portrait){
+  body .slider .ph.wide,body .to-now .slider .ph.wide,body .to-index .slider .ph.wide{aspect-ratio:4/3}
+}
 </style>
 </head>
 <body>
