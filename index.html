@@ -276,11 +276,14 @@ h1.page-title{cursor:pointer}
   .hero-head .hl-date{order:4;margin:8px 0 0;align-self:flex-start;text-align:right;font-size:13px;font-family:var(--mono);color:var(--muted)}
 }
 
+/* Footer: city on its own line on desktop, appended to the address line on mobile */
+.city-m{display:none}
+@media (max-width:640px){footer.site .city-m{display:inline}footer.site .city-d{display:none}}
 /* Mobile footer: no grey text */
 @media (max-width:640px){
   footer.site p,footer.site .hours dt,footer.site .hours dd,footer.site .hours .e,footer.site .legal{color:var(--fg)}
   /* Mobile footer: tighter line spacing */
-  footer.site{line-height:1.4}footer.site p{margin:0 0 1px}footer.site h4{margin-bottom:4px}footer.site .hours{row-gap:1px}
+  footer.site{line-height:1.5}footer.site p{margin:0 0 1px}footer.site h4{margin-bottom:4px}footer.site .hours{row-gap:1px}
   footer.site .fb{margin-top:8px}
 }
 
@@ -492,8 +495,8 @@ footer.site{font-size:14px}
     <div>
       <h4>חנינא – מקום לאמנות עכשווית</h4>
       <p><span class="en">Hanina Contemporary Art</span></p>
-      <p>שביל המפעל 5, קומה 4</p>
-      <p>תל אביב</p>
+      <p>שביל המפעל 5, קומה 4<span class="city-m">, תל אביב</span></p>
+      <p class="city-d">תל אביב</p>
       <p><span class="en">haninanew@gmail.com</span></p>
     </div>
     <div>
