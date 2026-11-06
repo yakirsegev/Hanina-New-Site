@@ -10,12 +10,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Noto+Sans+Hebrew:wght@100..900&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Narkiss Block (Yed NarkisBlockMF) — used only for running text and the nav; headings and bold text use Noto Sans Hebrew (Google Fonts, OFL) */
-@font-face{font-family:"Narkiss Block";src:url("fonts/NarkissBlock-Thin.woff2") format("woff2"),local("Yed NarkisBlockMF Thin");font-weight:200;font-style:normal;font-display:swap;unicode-range:U+0590-05FF,U+FB1D-FB4F,U+20AA}
+/* Narkiss Block (Yed NarkisBlockMF) — Regular only (web licence for one weight); used for running text and the nav; headings and bold text use Noto Sans Hebrew (Google Fonts, OFL) */
 @font-face{font-family:"Narkiss Block";src:url("fonts/NarkissBlock-Regular.woff2") format("woff2"),local("Yed NarkisBlockMF");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0590-05FF,U+FB1D-FB4F,U+20AA}
-@font-face{font-family:"Narkiss Block";src:url("fonts/NarkissBlock-Medium.woff2") format("woff2"),local("Yed NarkisBlockMF Medium");font-weight:500;font-style:normal;font-display:swap;unicode-range:U+0590-05FF,U+FB1D-FB4F,U+20AA}
-@font-face{font-family:"Narkiss Block";src:url("fonts/NarkissBlock-Bold.woff2") format("woff2"),local("Yed NarkisBlockMF Bold");font-weight:700;font-style:normal;font-display:swap;unicode-range:U+0590-05FF,U+FB1D-FB4F,U+20AA}
-@font-face{font-family:"Narkiss Block";src:url("fonts/NarkissBlock-Black.woff2") format("woff2"),local("Yed NarkisBlockMF Black");font-weight:900;font-style:normal;font-display:swap;unicode-range:U+0590-05FF,U+FB1D-FB4F,U+20AA}
 :root{
   --bg:#ffffff;
   --fg:#17181a;
@@ -38,6 +34,7 @@
 *{box-sizing:border-box}
 a,button{-webkit-tap-highlight-color:transparent}
 html,body{direction:rtl;unicode-bidi:isolate}
+body{font-synthesis-weight:none} /* Narkiss is Regular only: never fake bold/light */
 body{text-align:right;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.65;margin:0}
 a{color:inherit;text-decoration:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
