@@ -422,7 +422,8 @@ a.fb-link[href*="facebook"]{color:#1877f2}a.fb-link[href*="instagram"]{color:#c1
 .contact-wrap{display:flex;flex-direction:column}.contact-photo{margin-top:56px}
 @media (max-width:640px){.contact-photo{order:-1;margin-top:0;margin-bottom:40px}}
 @media (max-width:640px){.contact{gap:24px}}
-@media (max-width:640px){.contact .fb{margin-top:14px}} /* contact page: social links 2px lower on mobile */
+/* Mobile contact page: social links live in the email block, same inner spacing as the other blocks */
+@media (max-width:640px){.contact>div:nth-child(2) .fb{display:none}.contact .fb.fb-m{margin:0 0 4px}}
 /* Email: under the address (no heading) on desktop; own block with heading on mobile */
 .contact .c-mail{display:none;margin-top:20px}
 @media (min-width:641px){.contact .c-mail{display:block}.contact .c-mail-block{display:none}}
@@ -1460,6 +1461,7 @@ const views={
       </dl><p class="fb"><a class="en fb-link" href="https://www.facebook.com/hanina.new" target="_blank" rel="noopener">Facebook</a><a class="en fb-link" href="https://www.instagram.com/haninagallery/" target="_blank" rel="noopener">Instagram</a></p></div>
       <div class="c-mail-block">
         <p><span class="en" id="mail">haninanew@gmail.com</span><button class="copy" data-copy="haninanew@gmail.com">העתקה</button></p>
+        <p class="fb fb-m"><a class="en fb-link" href="https://www.facebook.com/hanina.new" target="_blank" rel="noopener">Facebook</a><a class="en fb-link" href="https://www.instagram.com/haninagallery/" target="_blank" rel="noopener">Instagram</a></p>
       </div>
     </div>
     <div class="contact-photo">${ph("img/contact-front.jpg","כניסה לחנינא, שביל המפעל 5","land")}</div>
