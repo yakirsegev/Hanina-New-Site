@@ -279,6 +279,9 @@ h1.page-title{cursor:pointer}
 /* Mobile footer: no grey text */
 @media (max-width:640px){
   footer.site p,footer.site .hours dt,footer.site .hours dd,footer.site .hours .e,footer.site .legal{color:var(--fg)}
+  /* Mobile footer: tighter line spacing */
+  footer.site{line-height:1.4}footer.site p{margin:0 0 1px}footer.site h4{margin-bottom:4px}footer.site .hours{row-gap:1px}
+  footer.site .fb{margin-top:8px}
 }
 
 /* IBM Plex Mono has very wide spaces; tighten word spacing wherever it is used */
@@ -429,6 +432,7 @@ body[data-page="contact"] footer.site .wrap>div:nth-child(-n+2){display:none}
 body[data-page="contact"] footer.site{border-top:0}body[data-page="contact"] footer.site .wrap{padding-top:0}body[data-page="contact"] footer.site .legal{margin-top:0!important} /* contact page already shows these details */
 footer.site .wrap{display:grid;gap:32px;padding-block:40px;grid-template-columns:minmax(0,1fr)}
 @media (min-width:641px){footer.site .wrap{grid-template-columns:max-content max-content minmax(0,1fr);column-gap:72px}}
+@media (max-width:640px){footer.site .wrap{gap:22px;padding-block:28px 24px}footer.site .legal{padding-top:14px}}
 .hours{display:grid;grid-template-columns:max-content max-content max-content;column-gap:16px;row-gap:4px;margin:0;justify-content:start}
 .hours dt,.hours dd{margin:0;white-space:nowrap;color:var(--muted)}
 .hours dt{color:inherit}
@@ -1452,7 +1456,7 @@ const views={
         <dt>ד׳–ה׳</dt><dd class="t"><bdi dir="ltr">13:00–19:00</bdi></dd><dd class="e"><bdi dir="ltr">Wed.–Thu.</bdi></dd>
         <dt>ו׳–ש׳</dt><dd class="t"><bdi dir="ltr">10:00–14:00</bdi></dd><dd class="e"><bdi dir="ltr">Fri.–Sat.</bdi></dd>
       </dl><p class="fb"><a class="en fb-link" href="https://www.facebook.com/hanina.new" target="_blank" rel="noopener">Facebook</a><a class="en fb-link" href="https://www.instagram.com/haninagallery/" target="_blank" rel="noopener">Instagram</a></p></div>
-      <div class="c-mail-block"><h3>אימייל</h3>
+      <div class="c-mail-block">
         <p><span class="en" id="mail">haninanew@gmail.com</span><button class="copy" data-copy="haninanew@gmail.com">העתקה</button></p>
       </div>
     </div>
