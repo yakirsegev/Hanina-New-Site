@@ -415,6 +415,9 @@ a.fb-link[href*="facebook"]{color:#1877f2}a.fb-link[href*="instagram"]{color:#c1
 /* Mailing list hidden for now (desktop) */
 .contact h3{font-family:var(--body);font-weight:600;font-size:15px;letter-spacing:.06em;margin-bottom:10px}
 .contact p{margin:0 0 4px}
+/* Entrance photo: below the details on desktop/tablet, above them on mobile */
+.contact-wrap{display:flex;flex-direction:column}.contact-photo{margin-top:56px}
+@media (max-width:640px){.contact-photo{order:-1;margin-top:0;margin-bottom:40px}}
 /* Email: under the address (no heading) on desktop; own block with heading on mobile */
 .contact .c-mail{display:none;margin-top:20px}
 @media (min-width:641px){.contact .c-mail{display:block}.contact .c-mail-block{display:none}}
@@ -1441,6 +1444,7 @@ const views={
     </div>`,
   contact:()=>`
     <h1 class="page-title">צור קשר</h1>
+    <div class="contact-wrap">
     <div class="contact">
       <div><h3>חנינא – מקום לאמנות עכשווית</h3><p><span class="en">Hanina Contemporary Art</span></p><p>שביל המפעל 5, קומה 4</p><p>תל אביב</p><p class="c-mail"><span class="en">haninanew@gmail.com</span><button class="copy" data-copy="haninanew@gmail.com">העתקה</button></p></div>
       <div><h3>שעות פתיחה</h3>
@@ -1452,7 +1456,8 @@ const views={
         <p><span class="en" id="mail">haninanew@gmail.com</span><button class="copy" data-copy="haninanew@gmail.com">העתקה</button></p>
       </div>
     </div>
-    <div style="margin-top:56px">${ph("img/contact-front.jpg","כניסה לחנינא, שביל המפעל 5","land")}</div>`
+    <div class="contact-photo">${ph("img/contact-front.jpg","כניסה לחנינא, שביל המפעל 5","land")}</div>
+    </div>`
 };
 
 function artistView(id){
