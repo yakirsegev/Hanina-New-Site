@@ -1623,7 +1623,7 @@ document.addEventListener("keydown",e=>{
 function showSlide(sl,n,auto){
   const items=sl.querySelectorAll(".slide"), dots=sl.querySelectorAll(".dot-btn");
   items.forEach((el,i)=>el.hidden=i!==n); dots.forEach((d,i)=>d.setAttribute("aria-selected",String(i===n)));
-  if(!auto) startSlider(); // a click or swipe restarts the 4-second count
+  if(!auto) startSlider(); // a click or swipe restarts the 3.5-second count
 }
 // Desktop archive cards: if the English title would break across lines, move it whole to its own line
 function splitCardTitles(){
@@ -1653,14 +1653,14 @@ function setTones(){
 function startSlider(){
   clearInterval(slideTimer);
   const sl=app.querySelector("[data-slider]"); if(!sl||matchMedia("(prefers-reduced-motion:reduce)").matches) return;
-  // Home page only: crossfade to the next image every 4 seconds
+  // Home page only: crossfade to the next image every 3.5 seconds
   if(!sl.closest("[data-to-now]")) return;
   const n=sl.querySelectorAll(".slide").length; if(n<2) return;
   slideTimer=setInterval(()=>{
     if(!sl.isConnected){clearInterval(slideTimer);return}
     const items=[...sl.querySelectorAll(".slide")],cur=items.findIndex(x=>!x.hidden);
     showSlide(sl,(cur+1)%n,true);
-  },4000);
+  },3500);
 }
 // Swipe between slides on touch screens (RTL: dragging right brings the next image)
 let swipeX=null,swipeY=null,justSwiped=0;
