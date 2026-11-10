@@ -295,7 +295,7 @@ h1.page-title{cursor:pointer}
 .hero-artist bdi[lang="en"]{margin-right:.35em;margin-left:0}
 .hero-curator bdi[lang="en"]{margin-right:.2em;margin-left:0}
 .hl-en{margin-right:.15em;margin-left:0}
-.card .t bdi[lang="en"]{margin-right:.28em;margin-left:0}
+.card .t bdi[lang="en"]{margin:0}.card .t .th{margin-left:.28em}
 .prose .text-by{font-family:var(--mono);font-size:13px;word-spacing:-.3em;margin-top:1.4em}
 @media (max-width:640px){.prose .text-by{font-size:calc(1em - 2px)}}
 @media (min-width:641px){.card .t.en-break bdi[lang="en"]{display:block;margin:0;text-align:right}}
@@ -1523,7 +1523,7 @@ const views={
     <div class="archive">
       ${list.map(x=>`<a class="card" href="#exh-${x.id}">
         ${ph(x.img,"תמונה","sq")}
-        <span class="t">${esc(x.title)}${x.titleEn?`<wbr><bdi dir="ltr" lang="en">${esc(x.titleEn)}</bdi>`:""}</span>
+        <span class="t"><span class="th">${esc(x.title)}</span>${x.titleEn?`<wbr><bdi dir="ltr" lang="en">${esc(x.titleEn)}</bdi>`:""}</span>
         <span class="a">${x.artists.map(nmSpan).join(", ")}${x.note?`: ${esc(x.note)}`:""}</span>
         ${x.artistsEn?`<span class="a ae"><bdi dir="ltr" lang="en">${x.artistsEn.map(nmSpan).join(", ")}${x.noteEn?`: ${esc(x.noteEn)}`:""}</bdi></span>`:""}
         <span class="d"><bdi>${range(x.start,x.end)}</bdi></span>
@@ -1734,7 +1734,7 @@ function route(backY){
 }
 app.addEventListener("click",e=>{
   const yb=e.target.closest("[data-year]");
-  if(yb){archiveYear=yb.dataset.year;app.innerHTML=views.archive(archiveYear);fitNames();return}
+  if(yb){archiveYear=yb.dataset.year;app.innerHTML=views.archive(archiveYear);setTones();splitCardTitles();fitNames();return}
   const tg=e.target.closest("[data-toggle-texts]");
   if(tg){const w=tg.parentElement;const o=w.classList.toggle("open");tg.setAttribute("aria-expanded",String(o));return}
   const db=e.target.closest("[data-slide]");
