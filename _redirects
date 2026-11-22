@@ -1,0 +1,3 @@
+# Old Wix pages no longer exist: permanent redirect home so Google drops the broken sitelinks.
+# Real files (img/, fonts/, robots.txt, sitemap.xml) are served first.
+/*    /    301
