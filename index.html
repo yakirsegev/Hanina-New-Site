@@ -2,6 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
+<base href="/">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>גלריה חנינא – מקום לאמנות עכשווית | Hanina Contemporary Art</title>
 <meta name="description" content="גלריה חנינא – גלריה שיתופית לאמנות עכשווית בקריית המלאכה, תל אביב. תערוכות, אמנים וארכיון תערוכות משנת 2008. Hanina Contemporary Art, Tel Aviv.">
@@ -1661,7 +1662,7 @@ function artistView(id){
 
 let archiveYear="", slideTimer, lb=null;
 function currentWorks(){
-  const h=currentRoute||location.hash.slice(1)||"current";
+  const h=currentRoute||urlRoute()||"current";
   let list=null;
   if(h.startsWith("artist-")) list=SITE.artists.find(x=>x.id===h.slice(7))?.works;
   else if(h.startsWith("exh-")) list=SITE.archive.find(x=>x.id===h.slice(4))?.works;
@@ -1748,21 +1749,57 @@ document.addEventListener("touchend",e=>{
 let currentRoute="";
 let archiveScroll=null;
 function go(h){
-  if(h.startsWith("exh-") && (currentRoute||location.hash.slice(1))==="archive") archiveScroll=window.scrollY;
+  if(h.startsWith("exh-") && (currentRoute||urlRoute())==="archive") archiveScroll=window.scrollY;
   currentRoute=h;
   // Each page gets its own history entry, so the phone's Back button returns to the previous screen
   try{
     history.replaceState({y:window.scrollY},"",location.href);
-    if(location.hash!=="#"+h) history.pushState({y:0},"","#"+h);
+    if(location.pathname!==pathOf(h)||location.hash) history.pushState({y:0},"",pathOf(h));
   }catch(e){}
   route();
 }
+/* Clean URLs (for search engines): /artists/<name>/, /exhibitions/<id>/, /about/ … ; old #hash links still work */
+const slugOf=a=>(a.nameEn||a.id).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+function pathOf(h){
+  if(!h||h==="current") return "/";
+  if(h.startsWith("artist-")){const a=SITE.artists.find(x=>x.id===h.slice(7));return "/artists/"+(a?slugOf(a):h.slice(7))+"/"}
+  if(h.startsWith("exh-")) return "/exhibitions/"+h.slice(4)+"/";
+  return "/"+h+"/";
+}
+function routeOf(p){
+  p=decodeURIComponent(p).replace(/\/index\.html$/,"").replace(/\/+$/,"");
+  if(!p) return "current";
+  let m=p.match(/^\/artists\/([^/]+)$/);
+  if(m){const a=SITE.artists.find(x=>slugOf(x)===m[1]||x.id===m[1]);return a?"artist-"+a.id:"artists"}
+  m=p.match(/^\/exhibitions\/([^/]+)$/); if(m) return "exh-"+m[1];
+  return p.slice(1);
+}
+function urlRoute(){ return location.hash.length>1?location.hash.slice(1):routeOf(location.pathname); }
+function linkify(root){
+  root.querySelectorAll('a[href^="#"]').forEach(a=>{const h=a.getAttribute("href").slice(1); if(!h) return; a.dataset.h=h; a.setAttribute("href",pathOf(h));});
+}
+const PAGE_TITLES={current:"",now:"תערוכה נוכחית",about:"אודות",artists:"אמני חנינא",archive:"ארכיון תערוכות",press:"כתבות",shop:"חנות",contact:"צור קשר"};
+const SITE_NAME="גלריה חנינא – מקום לאמנות עכשווית";
+function setMeta(h){
+  let t=SITE_NAME, d="גלריה חנינא – גלריה שיתופית לאמנות עכשווית בקריית המלאכה, תל אביב. תערוכות, אמנים וארכיון תערוכות משנת 2008.";
+  if(h.startsWith("artist-")){const a=SITE.artists.find(x=>x.id===h.slice(7)); if(a){t=a.name+" – "+a.nameEn+" | גלריה חנינא"; d=a.name+" ("+a.nameEn+"), אמן/ית בגלריה חנינא – מקום לאמנות עכשווית, תל אביב: עבודות וקורות חיים.";}}
+  else if(h.startsWith("exh-")){const x=SITE.archive.find(e=>e.id===h.slice(4)); if(x){const ar=(x.artists||[]).join(", "); t=x.title+(ar?" – "+ar:"")+" | גלריה חנינא"; const tx=(x.text&&x.text[0])||""; d=(tx?tx.replace(/\s+/g," ").slice(0,150)+"…":"תערוכה בגלריה חנינא"+(ar?": "+ar:""));}}
+  else if(PAGE_TITLES[h]) t=PAGE_TITLES[h]+" | גלריה חנינא";
+  document.title=t;
+  const set=(sel,attr,v)=>{const el=document.querySelector(sel); if(el) el.setAttribute(attr,v);};
+  const url="https://hanina.org"+pathOf(h);
+  set('meta[name="description"]',"content",d); set('link[rel="canonical"]',"href",url);
+  set('meta[property="og:url"]',"content",url); set('meta[property="og:title"]',"content",t); set('meta[property="og:description"]',"content",d);
+}
+// An old #hash address becomes the clean one (no reload)
+try{ if(location.hash.length>1){ const h0=location.hash.slice(1); history.replaceState(history.state,"",pathOf(h0)); currentRoute=h0; } }catch(e){}
 try{ history.scrollRestoration="manual"; }catch(e){}
 // Handle in-page links in script so navigation works even where the frame blocks hash changes
 document.addEventListener("click",e=>{
   if(e.target.closest("h1.page-title")&&!e.target.closest("a")){e.preventDefault();go("current");return} // big page titles lead home
-  const a=e.target.closest('a[href^="#"]'); if(!a) return;
-  const h=a.getAttribute("href").slice(1); if(!h) return;
+  const a=e.target.closest('a[data-h],a[href^="#"]'); if(!a) return;
+  if(e.metaKey||e.ctrlKey||e.shiftKey||e.button>0) return; // let "open in new tab" work
+  const h=a.dataset.h||a.getAttribute("href").slice(1); if(!h) return;
   e.preventDefault(); go(h);
 });
 /* Mobile: artist-name lists may tighten letter-spacing by up to ~4px per line, only when that pulls a name up and saves a line */
@@ -1784,7 +1821,7 @@ function fitNames(){
 addEventListener("resize",()=>{clearTimeout(fitNames.t);fitNames.t=setTimeout(fitNames,150)});
 if(document.fonts) document.fonts.ready.then(()=>fitNames());
 function route(backY){
-  const h=currentRoute||(location.hash||"#current").slice(1)||"current";
+  const h=currentRoute||urlRoute()||"current";
   let html, nav=h;
   if(h.startsWith("artist-")){html=artistView(h.slice(7));nav="artists"}
   else if(h.startsWith("exh-")){const x=SITE.archive.find(e=>e.id===h.slice(4));html=x?exhibitionView(x,false):views.archive();nav="archive"}
@@ -1799,7 +1836,9 @@ function route(backY){
   setTones();
   splitCardTitles();
   fitNames();
-  const r=currentRoute||location.hash.slice(1);
+  linkify(document);
+  setMeta(h);
+  const r=currentRoute||urlRoute();
   if(typeof backY==="number"){ archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,backY)); }
   else if(r==="archive" && archiveScroll!==null){ const y=archiveScroll; archiveScroll=null; requestAnimationFrame(()=>window.scrollTo(0,y)); }
   else window.scrollTo(0,0);
@@ -1826,7 +1865,7 @@ matchMedia("(max-width:820px)").addEventListener("change",m=>{mainNav.hidden=m.m
 mainNav.hidden=matchMedia("(max-width:820px)").matches;
 document.getElementById("yr").textContent=new Date().getFullYear();
 function syncFromUrl(){
-  const h=(location.hash||"#current").slice(1)||"current";
+  const h=urlRoute()||"current";
   if(h===currentRoute) return;
   currentRoute=h;
   const y=history.state&&typeof history.state.y==="number"?history.state.y:undefined;

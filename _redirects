@@ -1,3 +1,13 @@
-# Old Wix pages no longer exist: permanent redirect home so Google drops the broken sitelinks.
+# Clean page addresses are served by the single-page app
+/now            /index.html   200
+/about          /index.html   200
+/artists        /index.html   200
+/artists/*      /index.html   200
+/archive        /index.html   200
+/exhibitions/*  /index.html   200
+/press          /index.html   200
+/shop           /index.html   200
+/contact        /index.html   200
+# Old Wix pages no longer exist: permanent redirect home so Google drops the broken links.
 # Real files (img/, fonts/, robots.txt, sitemap.xml) are served first.
-/*    /    301
+/*              /             301
