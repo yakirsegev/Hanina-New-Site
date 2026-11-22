@@ -8,6 +8,12 @@
 /press          /index.html   200
 /shop           /index.html   200
 /contact        /index.html   200
+# Specific old Wix pages that Google still shows
+/home-en            /                301
+/blog/*             /press/          301
+/single-post/*      /press/          301
+/hirshfeld          /archive/        301
+/upon-my-dead-body  /archive/        301
 # Old Wix pages no longer exist: permanent redirect home so Google drops the broken links.
 # Real files (img/, fonts/, robots.txt, sitemap.xml) are served first.
 /*              /             301
