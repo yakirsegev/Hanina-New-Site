@@ -19,6 +19,53 @@
 /tziki-1           /artists/tziki-eisenberg/  301
 /tziki             /artists/tziki-eisenberg/  301
 /tziki-en          /artists/tziki-eisenberg/  301
+# Old Wix artist pages (Google still links to them)
+/oscar-1                       /artists/oscar-abosh/  301
+/oscar                         /artists/oscar-abosh/  301
+/oscar-en                      /artists/oscar-abosh/  301
+/shira-gepstien-moshkovich-en  /artists/shira-gepstein/  301
+/shira-gepstien-moshkovich     /artists/shira-gepstein/  301
+/shirel-safra-en               /artists/shirel-safra/  301
+/inbar-frim-en                 /artists/inbar-frim/  301
+/inbal-mary-cohen-en           /artists/inbal-marie-cohen/  301
+/inbal-mary-cohen              /artists/inbal-marie-cohen/  301
+/inbal                         /artists/inbal-marie-cohen/  301
+/inbal-en                      /artists/inbal-marie-cohen/  301
+/michael-yagodin               /artists/michael-igudin/  301
+/michael-yagodin-en            /artists/michael-igudin/  301
+/reuma-chayot                  /artists/reuma-zoher-chayot/  301
+/reuma-chayot-en               /artists/reuma-zoher-chayot/  301
+# Artist name at the site root, with or without -en
+/eden-halfon                   /artists/eden-halfon/  301
+/eden-halfon-en                /artists/eden-halfon/  301
+/shani-sasi                    /artists/shani-sasi/  301
+/shani-sasi-en                 /artists/shani-sasi/  301
+/inbar-frim                    /artists/inbar-frim/  301
+/yakir-segev                   /artists/yakir-segev/  301
+/yakir-segev-en                /artists/yakir-segev/  301
+/shirel-safra                  /artists/shirel-safra/  301
+/nimrod-nishri                 /artists/nimrod-nishri/  301
+/nimrod-nishri-en              /artists/nimrod-nishri/  301
+/shira-reiman                  /artists/shira-reiman/  301
+/shira-reiman-en               /artists/shira-reiman/  301
+/vered-aharonovitch            /artists/vered-aharonovitch/  301
+/vered-aharonovitch-en         /artists/vered-aharonovitch/  301
+/inbal-marie-cohen             /artists/inbal-marie-cohen/  301
+/inbal-marie-cohen-en          /artists/inbal-marie-cohen/  301
+/reuma-zoher-chayot            /artists/reuma-zoher-chayot/  301
+/reuma-zoher-chayot-en         /artists/reuma-zoher-chayot/  301
+/michael-igudin                /artists/michael-igudin/  301
+/michael-igudin-en             /artists/michael-igudin/  301
+/roey-koren                    /artists/roey-koren/  301
+/roey-koren-en                 /artists/roey-koren/  301
+/tziki-eisenberg               /artists/tziki-eisenberg/  301
+/tziki-eisenberg-en            /artists/tziki-eisenberg/  301
+/shira-gepstein                /artists/shira-gepstein/  301
+/shira-gepstein-en             /artists/shira-gepstein/  301
+/oscar-abosh                   /artists/oscar-abosh/  301
+/oscar-abosh-en                /artists/oscar-abosh/  301
+/shoval-kalushiner             /artists/shoval-kalushiner/  301
+/shoval-kalushiner-en          /artists/shoval-kalushiner/  301
 # Old Wix pages no longer exist: permanent redirect home so Google drops the broken links.
 # Real files (img/, fonts/, robots.txt, sitemap.xml) are served first.
 /*              /             301
