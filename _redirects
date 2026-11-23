@@ -14,6 +14,8 @@
 /single-post/*      /press/          301
 /hirshfeld          /archive/        301
 /upon-my-dead-body  /archive/        301
+/vered-en           /artists/vered-aharonovitch/  301
+/vered              /artists/vered-aharonovitch/  301
 # Old Wix pages no longer exist: permanent redirect home so Google drops the broken links.
 # Real files (img/, fonts/, robots.txt, sitemap.xml) are served first.
 /*              /             301
