@@ -16,6 +16,9 @@
 /upon-my-dead-body  /archive/        301
 /vered-en           /artists/vered-aharonovitch/  301
 /vered              /artists/vered-aharonovitch/  301
+/tziki-1           /artists/tziki-eisenberg/  301
+/tziki             /artists/tziki-eisenberg/  301
+/tziki-en          /artists/tziki-eisenberg/  301
 # Old Wix pages no longer exist: permanent redirect home so Google drops the broken links.
 # Real files (img/, fonts/, robots.txt, sitemap.xml) are served first.
 /*              /             301
