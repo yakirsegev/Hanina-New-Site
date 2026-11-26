@@ -12,7 +12,6 @@
 /home-en            /                301
 /blog/*             /press/          301
 /single-post/*      /press/          301
-/hirshfeld          /archive/        301
 /upon-my-dead-body  /archive/        301
 /vered-en           /artists/vered-aharonovitch/  301
 /vered              /artists/vered-aharonovitch/  301
@@ -69,6 +68,8 @@
 # Old Wix "Hanina artists" page
 /israeli-creators              /artists/  301
 /israeli-creators-en           /artists/  301
+# Old Wix pages that should drop out of Google: answer 404 (visitors still see the home page)
+/hirshfeld          /index.html      404
 # Old Wix pages no longer exist: permanent redirect home so Google drops the broken links.
 # Real files (img/, fonts/, robots.txt, sitemap.xml) are served first.
 /*              /             301
