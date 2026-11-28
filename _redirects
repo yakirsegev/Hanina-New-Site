@@ -7,6 +7,7 @@
 /exhibitions/*  /index.html   200
 /press          /index.html   200
 /shop           /index.html   200
+/thanks         /index.html   200
 /contact        /index.html   200
 # Specific old Wix pages that Google still shows
 /home-en            /                301

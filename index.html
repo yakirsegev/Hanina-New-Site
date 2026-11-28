@@ -425,6 +425,7 @@ a.fb-link[href*="facebook"]{color:#1877f2}a.fb-link[href*="instagram"]{color:#c1
 .item .buy{justify-self:start;margin-top:6px;text-decoration:none}
 .item .yr{color:var(--muted);font-variant-numeric:tabular-nums}
 .item .sold{color:#d0021b;font-weight:700;justify-self:start}
+.thanks{max-width:62ch;display:grid;gap:14px}.thanks p{margin:0}.thanks .btn{text-decoration:none;display:inline-block;margin-top:10px}
 .note{border:1px dashed var(--line);padding:14px 18px;color:var(--muted);font-size:15px;margin-bottom:36px;max-width:62ch}
 
 /* Contact */
@@ -1652,6 +1653,13 @@ const views={
         ${s.soldOut?`<span class="sold" lang="en" dir="ltr">Sold Out</span>`:s.byRequest?`<span class="sold" lang="en" dir="ltr">By Request</span>`:s.link?`<a class="btn buy" href="${esc(s.link)}" target="_blank" rel="noopener">לרכישה</a>`:`<a class="btn buy" href="mailto:haninanew@gmail.com?subject=${encodeURIComponent("רכישת ספר: "+s.title)}">לרכישה</a>`}
       </div>`).join("")}
     </div>`,
+  thanks:()=>`
+    <h1 class="page-title">תודה על הרכישה</h1>
+    <div class="thanks">
+      <p>התשלום התקבל. הקבלה נשלחה לכתובת המייל שהזנתם בדף התשלום.</p>
+      <p>אם הקבלה לא הגיעה תוך כמה דקות, כדאי לבדוק בתיקיית הספאם, או לכתוב לנו: <a href="mailto:haninanew@gmail.com"><span class="en">haninanew@gmail.com</span></a></p>
+      <p><a class="btn" href="#shop">חזרה לחנות</a></p>
+    </div>`,
   contact:()=>`
     <h1 class="page-title">צור קשר</h1>
     <div class="contact-wrap">
@@ -1814,7 +1822,7 @@ function urlRoute(){ return location.hash.length>1?location.hash.slice(1):routeO
 function linkify(root){
   root.querySelectorAll('a[href^="#"]').forEach(a=>{const h=a.getAttribute("href").slice(1); if(!h) return; a.dataset.h=h; a.setAttribute("href",pathOf(h));});
 }
-const PAGE_TITLES={current:"",now:"תערוכה נוכחית",about:"אודות",artists:"אמני חנינא",archive:"ארכיון תערוכות",press:"כתבות",shop:"חנות",contact:"צור קשר"};
+const PAGE_TITLES={current:"",now:"תערוכה נוכחית",about:"אודות",artists:"אמני חנינא",archive:"ארכיון תערוכות",press:"כתבות",shop:"חנות",thanks:"תודה על הרכישה",contact:"צור קשר"};
 const SITE_NAME="גלריה חנינא – מקום לאמנות עכשווית";
 function setMeta(h){
   let t=SITE_NAME, d="גלריה חנינא – גלריה שיתופית לאמנות עכשווית בקריית המלאכה, תל אביב. תערוכות, אמנים וארכיון תערוכות משנת 2008.";
